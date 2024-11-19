@@ -60,8 +60,8 @@ int main(){
 	insere(&pI,info5);	
 	exibirPreordem(pI);
 	printf("\n");
+	exibirEmOrdem(pI);
 
-	printf("%s\n", pI->info1.palavraPortugues);
 
 	return 0;
 }

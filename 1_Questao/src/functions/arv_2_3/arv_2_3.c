@@ -20,7 +20,7 @@ PortugesIngles* criaNo(Info info, PortugesIngles *filhoEsq, PortugesIngles *filh
 	return no;
 }
 
-PortugesIngles* adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho){
+void adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho){
 	
 	if(strcmp(info.palavraPortugues, no->info1.palavraPortugues) > 0){
 		no->info2 = info;
@@ -33,7 +33,6 @@ PortugesIngles* adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho
 	}
 
 	no->qtdInfo = 2;
-	return no;
 }
 
 PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIngles **filho){
@@ -78,7 +77,7 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 	}else{
 		if(ehFolha(*no)){
 			if((*no)->qtdInfo == 1){
-				*no = adicionaChave(*no, info, NULL);
+				adicionaChave(*no, info, NULL);
 			}else{
 				maiorNo = quebraNo(no, info, promove,NULL);
 				if(!(*pai)){
@@ -99,7 +98,7 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 
 			if(maiorNo){
 				if((*no)->qtdInfo == 1){
-					*no = adicionaChave(*no, *promove, maiorNo);
+					adicionaChave(*no, *promove, maiorNo);
 					maiorNo = NULL;
 				}else{
 					maiorNo = quebraNo(no, *promove, &promove1, &maiorNo);
@@ -127,5 +126,19 @@ void exibirPreordem(PortugesIngles *ptIn){
 		exibirPreordem(ptIn->cen);
 		if(ptIn->qtdInfo == 2)
 			exibirPreordem(ptIn->dir);
+	}
+}
+
+void exibirEmOrdem(PortugesIngles *ptIn){
+	if(ptIn){
+		exibirEmOrdem(ptIn->esq);
+
+		printf("%s\n", ptIn->info1.palavraPortugues);
+
+		exibirEmOrdem(ptIn->cen);
+		if(ptIn->qtdInfo == 2){
+			printf("%s\n", ptIn->info2.palavraPortugues);
+			exibirEmOrdem(ptIn->dir);
+		}
 	}
 }
