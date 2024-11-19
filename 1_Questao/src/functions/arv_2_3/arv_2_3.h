@@ -7,3 +7,4 @@ PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIn
 PortugesIngles* adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho);
 int ehFolha(PortugesIngles *no);
 PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *promove, PortugesIngles **Pai);
+void exibirPreordem(PortugesIngles *ptIn);
