@@ -3,11 +3,11 @@
 typedef struct inglesPortugues{
     char *palavra;
     struct inglesPortugues *dir,*esq;
-    int unidade;
 }InglesPortugues;
 
 typedef struct info{
     char *palavraPortugues;
+    int unidade;
     InglesPortugues *traducaoIngles;
 }Info;
 

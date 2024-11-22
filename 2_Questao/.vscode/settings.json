@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.njk": "njk",
         "curso.h": "c",
         "liberar.h": "c",
         "aluno.h": "c",
@@ -7,6 +8,12 @@
         "disciplina.h": "c",
         "matricula.h": "c",
         "stdlib.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "time.h": "c",
+        "arv_vp.c": "cpp",
+        "utils.h": "c",
+        "arv_vp.h": "c",
+        "exibicao_arv_bb.h": "c",
+        "exibicao_arv_vp.h": "c"
     }
 }
