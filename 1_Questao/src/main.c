@@ -1,77 +1,53 @@
 #include "./utils/utils.h"
 
-void insere(PortugesIngles **pi,Info info){
-	Info promove;
-	PortugesIngles *raiz;
+void insere(PalavraPortugues **pi,Data info){
+	Data promove;
+	PalavraPortugues *raiz;
 	raiz = NULL;
 
 	inserirPalavraPortugues(pi,info,&promove,&raiz);
 }
 
-int main(){
+int main() {
+    PalavraPortugues *raiz = NULL;
+    Data infos[26];
+    char *palavrasPT[] = {
+        "abacaxi", "banana", "cachorro", "dado", "elefante", "foca", "gato", "hipopotamo", "iguana", "jacare",
+        "kiwi", "leao", "macaco", "navio", "ovelha", "pato", "quati", "rato", "sapo", "tigre",
+        "urso", "vaca", "wolverine", "xaxim", "yak", "zebra"
+    };
+    
+	for(int i=0;i<26;i++){
+		infos[i].palavraPortugues = palavrasPT[i];
+		insere(&raiz,infos[i]);
+	}
 
-	Info info1;
-	info1.palavraPortugues = "a";
-	info1.traducaoIngles = NULL;
+	exibirEmOrdem(raiz);
+    printf("\n\n");
 
-	Info info2;
-	info2.palavraPortugues = "b";
-	info2.traducaoIngles = NULL;
+    for (int i = 25; i >= 0; i--) {
+        printf("Removendo %s\n", palavrasPT[i]);
+		
+        arvore23_remover(&raiz, palavrasPT[i]);
+		
+		exibirPreordem(raiz);
+		printf("\n\n");
+    }
 
-	Info info3;
-	info3.palavraPortugues = "c";
-	info3.traducaoIngles = NULL;
+    for(int i=0;i<26;i++){
+		infos[i].palavraPortugues = palavrasPT[i];
+		insere(&raiz,infos[i]);
+	}
 
-	Info info4;
-	info4.palavraPortugues = "d";
-	info4.traducaoIngles = NULL;
+    for (int i = 0; i < 26; i++) {
+        printf("Removendo %s\n", palavrasPT[i]);
+		
+        arvore23_remover(&raiz, palavrasPT[i]);
+		
+		exibirPreordem(raiz);
+		printf("\n\n");
+    }
 
-	Info info5;
-	info5.palavraPortugues = "e";
-	info5.traducaoIngles = NULL;
-
-	Info info6;
-	info6.palavraPortugues = "f";
-	info6.traducaoIngles = NULL;
-
-	Info info7;
-	info7.palavraPortugues = "g";
-	info7.traducaoIngles = NULL;
-
-	PortugesIngles *pI;
-	pI = NULL;
-	
-	insere(&pI,info1);
-	exibirPreordem(pI);
-	printf("\n");
-
-	insere(&pI,info2);
-	exibirPreordem(pI);
-	printf("\n");
-
-	insere(&pI,info3);
-	exibirPreordem(pI);
-	printf("\n");
-
-	insere(&pI,info4);
-	exibirPreordem(pI);
-	printf("\n");
-
-	insere(&pI,info5);	
-	exibirPreordem(pI);
-	printf("\n");
-
-	insere(&pI,info6);	
-	exibirPreordem(pI);
-	printf("\n");
-
-	insere(&pI,info7);	
-	exibirPreordem(pI);
-	printf("\n");
-
-	exibirEmOrdem(pI);
-
-	liberaArvore23(pI);
-
+    liberar23(raiz);
 	return 0;
 }

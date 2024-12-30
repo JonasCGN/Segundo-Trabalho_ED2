@@ -2,4 +2,4 @@
 
 #include "../../utils/utils.h"
 
-int inserirPalavraIngles(InglesPortugues **ingles, char *palavra);
+int inserirPalavraIngles(PalavraIngles **ingles, char *palavra);

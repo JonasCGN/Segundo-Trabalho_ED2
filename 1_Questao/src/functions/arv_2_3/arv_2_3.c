@@ -1,12 +1,12 @@
 #include "arv_2_3.h"
 
-int ehFolha(PortugesIngles *no){
+int ehFolha(PalavraPortugues *no){
 	return no->esq == NULL;
 }
 
-PortugesIngles* criaNo(Info info, PortugesIngles *filhoEsq, PortugesIngles *filhoCen){
-	PortugesIngles *no;
-	no = (PortugesIngles*)malloc(sizeof(PortugesIngles));
+PalavraPortugues* criaNo(Data info, PalavraPortugues *filhoEsq, PalavraPortugues *filhoCen){
+	PalavraPortugues *no;
+	no = (PalavraPortugues*)malloc(sizeof(PalavraPortugues));
 	if(!no){
 		printf("Nao foi possivel criar no\n");
 	}
@@ -15,12 +15,12 @@ PortugesIngles* criaNo(Info info, PortugesIngles *filhoEsq, PortugesIngles *filh
 	no->esq = filhoEsq;
 	no->cen = filhoCen;
 
-	no->qtdInfo = 1;
+	no->n_infos = 1;
 
 	return no;
 }
 
-void adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho){
+void adicionaChave(PalavraPortugues *no,Data info,PalavraPortugues *filho){
 	
 	if(strcmp(info.palavraPortugues, no->info1.palavraPortugues) > 0){
 		no->info2 = info;
@@ -32,12 +32,12 @@ void adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho){
 		no->cen = filho;
 	}
 
-	no->qtdInfo = 2;
+	no->n_infos = 2;
 }
 
-PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIngles **filho){
-	PortugesIngles *maior;
-
+PalavraPortugues* quebraNo(PalavraPortugues **no,Data valor,Data *promove,PalavraPortugues **filho){
+	PalavraPortugues *maior;
+	
 	if(strcmp(valor.palavraPortugues, (*no)->info2.palavraPortugues) > 0){
 		*promove = (*no)->info2;
 		if(filho)
@@ -63,20 +63,20 @@ PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIn
 			(*no)->cen = NULL;
 	}
 
-	(*no)->qtdInfo = 1;
+	(*no)->n_infos = 1;
 	return maior;
 }
 
-PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *promove, PortugesIngles **pai){
-	PortugesIngles *maiorNo;
-	Info promove1;
+PalavraPortugues* inserirPalavraPortugues(PalavraPortugues **no, Data info, Data *promove, PalavraPortugues **pai){
+	PalavraPortugues *maiorNo;
+	Data promove1;
 	maiorNo = NULL;
 
 	if(*no == NULL){
 		*no = criaNo(info,NULL,NULL);
 	}else{
 		if(ehFolha(*no)){
-			if((*no)->qtdInfo == 1){
+			if((*no)->n_infos == 1){
 				adicionaChave(*no, info, NULL);
 			}else{
 				maiorNo = quebraNo(no, info, promove,NULL);
@@ -89,7 +89,7 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 			if(strcmp(info.palavraPortugues, (*no)->info1.palavraPortugues) < 0){
 				maiorNo = inserirPalavraPortugues(&((*no)->esq), info, promove, no);
 			}else{
-				if(((*no)->qtdInfo == 1) || (strcmp(info.palavraPortugues, (*no)->info2.palavraPortugues) < 0)){
+				if(((*no)->n_infos == 1) || (strcmp(info.palavraPortugues, (*no)->info2.palavraPortugues) < 0)){
 					maiorNo = inserirPalavraPortugues(&((*no)->cen), info, promove,no);
 				}else{
 					maiorNo = inserirPalavraPortugues(&((*no)->dir), info, promove,no);
@@ -97,7 +97,7 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 			}
 
 			if(maiorNo){
-				if((*no)->qtdInfo == 1){
+				if((*no)->n_infos == 1){
 					adicionaChave(*no, *promove, maiorNo);
 					maiorNo = NULL;
 				}else{
@@ -115,46 +115,40 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 	return maiorNo;
 }
 
-void exibirPreordem(PortugesIngles *ptIn){
+void exibirPreordem(PalavraPortugues *ptIn){
 	if(ptIn){
-		printf("%s\n", ptIn->info1.palavraPortugues);
-		if(ptIn->qtdInfo == 2){
-			printf("%s\n", ptIn->info2.palavraPortugues);
+		printf("%s -> ", ptIn->info1.palavraPortugues);
+		if(ptIn->n_infos == 2){
+			printf("%s -> ", ptIn->info2.palavraPortugues);
 		}
 
 		exibirPreordem(ptIn->esq);
 		exibirPreordem(ptIn->cen);
-		if(ptIn->qtdInfo == 2)
+		if(ptIn->n_infos == 2)
 			exibirPreordem(ptIn->dir);
 	}
 }
 
-void exibirEmOrdem(PortugesIngles *ptIn){
+void exibirEmOrdem(PalavraPortugues *ptIn){
 	if(ptIn){
 		exibirEmOrdem(ptIn->esq);
 
 		printf("%s\n", ptIn->info1.palavraPortugues);
 
 		exibirEmOrdem(ptIn->cen);
-		if(ptIn->qtdInfo == 2){
+		if(ptIn->n_infos == 2){
 			printf("%s\n", ptIn->info2.palavraPortugues);
 			exibirEmOrdem(ptIn->dir);
 		}
 	}
 }
 
-void liberaArvore23(PortugesIngles *raiz){
+void liberaArvore23(PalavraPortugues *raiz){
 	if(raiz){
-
 		liberaArvore23(raiz->esq);
 		liberaArvore23(raiz->cen);
-		if(raiz->qtdInfo == 2){
+		if(raiz->n_infos == 2)
 			liberaArvore23(raiz->dir);
-			free(raiz);
-			raiz = NULL;
-		}else{
-			free(raiz);
-			raiz = NULL;
-		}
+		free(raiz);
 	}
 }

@@ -49,6 +49,10 @@ int main(){
 	exibirPreordem(pI);
 	printf("\n");
 
+	insere(&pI,info6);
+	exibirPreordem(pI);
+	printf("\n");
+
 	insere(&pI,info3);
 	exibirPreordem(pI);
 	printf("\n");
