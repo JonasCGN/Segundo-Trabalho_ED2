@@ -14,6 +14,7 @@
         "utils.h": "c",
         "arv_vp.h": "c",
         "exibicao_arv_bb.h": "c",
-        "exibicao_arv_vp.h": "c"
+        "exibicao_arv_vp.h": "c",
+        "remocao.h": "c"
     }
 }

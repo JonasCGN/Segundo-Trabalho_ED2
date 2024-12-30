@@ -64,14 +64,16 @@ void trocaCor(ArvVP **no){
 }
 
 void balancear(ArvVP **raiz){
-	if(cor((*raiz)->dir) == VERMELHO && cor((*raiz)->esq) == PRETO)
-		rotacaoEsq(raiz);
-	
-	if((*raiz)->esq && cor((*raiz)->esq) == VERMELHO && cor((*raiz)->esq->esq) == VERMELHO)
-		rotacaoDir(raiz);
+	if(*raiz){
+		if(cor((*raiz)->dir) == VERMELHO && cor((*raiz)->esq) == PRETO)
+			rotacaoEsq(raiz);
+		
+		if((*raiz)->esq && cor((*raiz)->esq) == VERMELHO && cor((*raiz)->esq->esq) == VERMELHO)
+			rotacaoDir(raiz);
 
-	if(cor((*raiz)->esq) == VERMELHO && cor((*raiz)->dir) == VERMELHO)
-		trocaCor(raiz);
+		if(cor((*raiz)->esq) == VERMELHO && cor((*raiz)->dir) == VERMELHO)
+			trocaCor(raiz);
+	}
 }
 
 ArvVP* insereArvVP(ArvVP **raiz, ArvVP* no){
@@ -93,6 +95,11 @@ ArvVP* insereArvVP(ArvVP **raiz, ArvVP* no){
 	}
 
 	return existe;
+}
+
+void inserePortuguesIngles(ArvVP **raiz, Info info){
+	insereArvVP(raiz,criaNo(info));
+	(*raiz)->cor = PRETO;
 }
 
 void moveEsqVermelha(ArvVP **raiz){
@@ -139,7 +146,11 @@ ArvVP *procuraMenor(ArvVP *raiz){
 	return menor;
 }
 
-int removerNoArvVP(ArvVP **raiz, char *valor){
+static int verificaPalavraUnidade(ArvVP *raiz,char *palavra, int unidade){
+	return (strcmp(raiz->info.palavra, palavra) == 0 && raiz->info.unidade == unidade);
+}
+
+int removerNoArvVP(ArvVP **raiz, char *valor,int unidade){
 	int existe = 0;
 
 	if(*raiz){
@@ -147,12 +158,14 @@ int removerNoArvVP(ArvVP **raiz, char *valor){
 			if((*raiz)->esq && cor((*raiz)->esq) == PRETO && cor((*raiz)->esq->esq) == PRETO)
 				moveEsqVermelha(raiz);
 
-			existe = removerNoArvVP(&(*raiz)->esq,valor);
+			existe = removerNoArvVP(&(*raiz)->esq,valor,unidade);
 		}else{
 			if(cor((*raiz)->esq) == VERMELHO)
 				rotacaoDir(raiz);
 			
-			if(strcmp(valor, (*raiz)->info.palavra) == 0 && (*raiz)->dir == NULL){
+			if(verificaPalavraUnidade(*raiz,valor,unidade) && (*raiz)->dir == NULL){
+				removeArvoreBB((*raiz)->info.palavrasIngles,unidade);
+
 				free(*raiz);
 				*raiz = NULL;
 				
@@ -161,21 +174,34 @@ int removerNoArvVP(ArvVP **raiz, char *valor){
 				if((*raiz)->dir && cor((*raiz)->dir) == PRETO && cor((*raiz)->dir->esq) == PRETO)
 					moveDirVermelha(raiz);
 
-				if(strcmp(valor, (*raiz)->info.palavra) == 0){
+				if(verificaPalavraUnidade(*raiz,valor,unidade)){
+					removeArvoreBB((*raiz)->info.palavrasIngles,unidade);
+					
 					ArvVP *aux;
 					aux = procuraMenor((*raiz)->dir);
+					
 					(*raiz)->info = aux->info;
 					removeMenor(&(*raiz)->dir);
 
 					existe = 1;
 				}else{
-					existe = removerNoArvVP(&(*raiz)->dir, valor);
+					existe = removerNoArvVP(&(*raiz)->dir, valor,unidade);
 				}
 			}
 		}
 	}
 
+	if(!existe)
+		balancear(raiz);
+
 	return existe;
+}
+
+void removePortuguesIngles(ArvVP **raiz, char *valor,int unidade){
+	removerNoArvVP(raiz,valor,unidade);
+	if(*raiz){
+		(*raiz)->cor = PRETO;
+	}
 }
 
 void exibirArvore(ArvVP *raiz){
@@ -187,10 +213,14 @@ void exibirArvore(ArvVP *raiz){
 	}
 }
 
-void liberar(ArvVP *raiz){
+void liberarArvVP(ArvVP *raiz){
 	if(raiz){
-		liberar(raiz->esq);
-		liberar(raiz->dir);
+		liberarArvVP(raiz->esq);
+		liberarArvVP(raiz->dir);
+
+		liberaArvoreBB(raiz->info.palavrasIngles);
+
 		free(raiz);
+		raiz = NULL;
 	}
 }

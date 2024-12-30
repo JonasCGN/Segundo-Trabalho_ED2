@@ -54,13 +54,17 @@ static InglesPortugues *menorFilho(InglesPortugues *raiz){
     return aux;
 }
 
-int removerPalavraIngles(InglesPortugues **raiz, char *palavra){
+static int verificaPalavraUnidade(InglesPortugues *raiz,char *palavra, int unidade){
+	return (strcmp(raiz->info.palavra, palavra) == 0 && raiz->info.unidade == unidade);
+}
+
+int removerPalavraIngles(InglesPortugues **raiz, char *palavra,int unidade){
     InglesPortugues *endFilho;
     int existe = 0;
 
     if((*raiz)){
 
-        if(strcmp(palavra, (*raiz)->info.palavra) == 0){
+        if(verificaPalavraUnidade(*raiz,palavra,unidade)){
             existe = 1;
 
             InglesPortugues *aux = *raiz;
@@ -75,13 +79,32 @@ int removerPalavraIngles(InglesPortugues **raiz, char *palavra){
                 
                 (*raiz)->info = endFilho->info;
 
-                removerPalavraIngles(&(*raiz)->dir,endFilho->info.palavra);
+                removerPalavraIngles(&(*raiz)->dir,endFilho->info.palavra,endFilho->info.unidade);
             }
         }else if(strcmp(palavra, (*raiz)->info.palavra) < 0)
-            existe = removerPalavraIngles(&(*raiz)->esq, palavra);
+            existe = removerPalavraIngles(&(*raiz)->esq, palavra, unidade);
         else
-            existe = removerPalavraIngles(&(*raiz)->dir, palavra);
+            existe = removerPalavraIngles(&(*raiz)->dir, palavra, unidade);
     }
 
     return existe;
+}
+
+void removeArvoreBB(InglesPortugues *raiz,int unidade){
+    if(raiz){
+        removeArvoreBB(raiz->esq,unidade);
+        removeArvoreBB(raiz->dir,unidade);
+        if(raiz->info.unidade == unidade)
+            removerPalavraIngles(&raiz,raiz->info.palavra,unidade);
+        
+    }
+}
+
+void liberaArvoreBB(InglesPortugues *raiz){
+    if(raiz){
+        liberaArvoreBB(raiz->esq);
+        liberaArvoreBB(raiz->dir);
+        free(raiz);
+        raiz = NULL;
+    }
 }

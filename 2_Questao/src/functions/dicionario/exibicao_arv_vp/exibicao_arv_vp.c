@@ -32,9 +32,11 @@ void exibePalavraPortuguesIngles(ArvVP *raiz, char *palavra){
 void exibeTodasPalavras(ArvVP *raiz){
 	if(raiz){
 		exibeTodasPalavras(raiz->esq);
+		printf("-----------------------------------------\n");
 		printf("Portugues: %s\n",raiz->info.palavra);
 		printf("Unidade: %d\n",raiz->info.unidade);
 		exibePalavraIngles(raiz->info.palavrasIngles);
+		printf("-----------------------------------------\n");
 		exibeTodasPalavras(raiz->dir);
 	}
 }
