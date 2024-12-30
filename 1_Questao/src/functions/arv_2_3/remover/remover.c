@@ -26,6 +26,14 @@ static int info_maior(char* valor,Data info){
     return strcmp(valor, info.palavraPortugues) > 0;
 }
 
+static int calcular_altura(PalavraPortugues *no)
+{
+    int altura = -1;
+    if(no != NULL)
+        altura = 1 + calcular_altura(no->esq);
+    return altura;
+}
+
 PalavraPortugues*no23_alocar()
 {
     PalavraPortugues*no;
@@ -97,6 +105,7 @@ static PalavraPortugues*arvore23_buscar_maior_filho(PalavraPortugues*raiz, Palav
     return filho;
 }
 
+//Acho que ok
 static PalavraPortugues*arvore23_buscar_pai(PalavraPortugues*raiz, char* info)
 {
     PalavraPortugues*pai;
@@ -121,6 +130,7 @@ static PalavraPortugues*arvore23_buscar_pai(PalavraPortugues*raiz, char* info)
     return pai;
 }
 
+//Acho que ok
 static PalavraPortugues*arvore23_buscar_maior_pai(PalavraPortugues*raiz, char* info)
 {
     PalavraPortugues*pai;
@@ -145,6 +155,7 @@ static PalavraPortugues*arvore23_buscar_maior_pai(PalavraPortugues*raiz, char* i
     return pai;
 }
 
+//Acho que ok
 static PalavraPortugues*arvore23_buscar_menor_pai(PalavraPortugues*raiz, char* info)
 {
     PalavraPortugues*pai;
@@ -156,12 +167,13 @@ static PalavraPortugues*arvore23_buscar_menor_pai(PalavraPortugues*raiz, char* i
         {
             if(info_menor(info,raiz->info1))
                 pai = arvore23_buscar_menor_pai(raiz->esq, info);
+                
             else if(raiz->n_infos == 1 || info_menor(info,raiz->info2))
                 pai = arvore23_buscar_menor_pai(raiz->cen, info);
             else
                 pai = arvore23_buscar_menor_pai(raiz->dir, info);
 
-            if(pai == NULL && info_maior(info,raiz->info1))
+            if(pai == NULL && info_maior(info, raiz->info1))
                 pai = raiz;
         }
     }
@@ -169,6 +181,7 @@ static PalavraPortugues*arvore23_buscar_menor_pai(PalavraPortugues*raiz, char* i
     return pai;
 }
 
+//Acho que ok
 static PalavraPortugues*arvore23_buscar_menor_pai_2_infos(PalavraPortugues*raiz, char* info)
 {
     PalavraPortugues*pai;
@@ -180,8 +193,10 @@ static PalavraPortugues*arvore23_buscar_menor_pai_2_infos(PalavraPortugues*raiz,
         {
             if(info_menor(info,raiz->info1))
                 pai = arvore23_buscar_menor_pai_2_infos(raiz->esq, info);
+                
             else if(raiz->n_infos == 1 || info_menor(info,raiz->info2))
                 pai = arvore23_buscar_menor_pai_2_infos(raiz->cen, info);
+
             else
                 pai = arvore23_buscar_menor_pai_2_infos(raiz->dir, info);
 
@@ -193,6 +208,7 @@ static PalavraPortugues*arvore23_buscar_menor_pai_2_infos(PalavraPortugues*raiz,
     return pai;
 }
 
+//Acho que ok
 int possivel_remover(PalavraPortugues*raiz)
 {
     int possivel = 0;
@@ -213,6 +229,7 @@ int possivel_remover(PalavraPortugues*raiz)
     return possivel;
 }
 
+//Acho que ok
 static int movimento_onda(Data saindo, Data *entrada, PalavraPortugues*pai, PalavraPortugues**origem, PalavraPortugues**raiz, PalavraPortugues**maior, int (*funcao_remover)(PalavraPortugues**, char*, PalavraPortugues*, PalavraPortugues**, PalavraPortugues**))
 {
     int removeu = funcao_remover(raiz, saindo.palavraPortugues, pai, origem, maior);
@@ -220,6 +237,7 @@ static int movimento_onda(Data saindo, Data *entrada, PalavraPortugues*pai, Pala
     return removeu;
 }
 
+//Acho que ok
 void arvore23_desalocar(PalavraPortugues**raiz)
 {
     if(*raiz != NULL)
@@ -234,6 +252,7 @@ void arvore23_desalocar(PalavraPortugues**raiz)
     }
 }
 
+//Acho que ok
 int arvore23_remover_nao_folha1(PalavraPortugues **origem, PalavraPortugues *raiz, Data *info, PalavraPortugues*filho1, PalavraPortugues*filho2, PalavraPortugues**maior)
 {
     int removeu;
@@ -258,6 +277,7 @@ int arvore23_remover_nao_folha1(PalavraPortugues **origem, PalavraPortugues *rai
     return removeu;
 }
 
+//Acho que ok
 int arvore23_remover_nao_folha2(PalavraPortugues**origem, PalavraPortugues *raiz, Data *info, PalavraPortugues*filho1, PalavraPortugues*filho2, PalavraPortugues**maior)
 {
     int removeu;
@@ -283,6 +303,7 @@ int arvore23_remover_nao_folha2(PalavraPortugues**origem, PalavraPortugues *raiz
     return removeu;
 }
 
+//Acho que ok
 int arvore23_remover1(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, PalavraPortugues**origem, PalavraPortugues**maior)
 {
     int removeu = 0;
@@ -330,7 +351,18 @@ int arvore23_remover1(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
                             PalavraPortugues*menor_pai;
                             menor_pai = arvore23_buscar_menor_pai_2_infos(*origem, (*raiz)->info1.palavraPortugues);
 
-                            if(pai_aux == NULL || (pai_aux != pai && menor_pai != NULL))
+                            if(pai_aux != NULL)
+                            {
+                                if(info_maior(pai_aux->info1.palavraPortugues, (*raiz)->info1) )
+                                    info_pai = pai_aux->info1;
+                                else
+                                    info_pai = pai_aux->info2;
+                            }
+                            
+                            int altura_menor_pai = calcular_altura(menor_pai);
+                            int altura_pai_aux = calcular_altura(pai_aux);
+
+                            if(pai_aux == NULL || (pai_aux != pai && menor_pai != NULL && altura_menor_pai <= altura_pai_aux && info_maior(info_pai.palavraPortugues, menor_pai->info2)))
                             {
                                 *maior = pai;
                                 (*raiz)->n_infos = 0;
@@ -338,7 +370,7 @@ int arvore23_remover1(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
                             }
                             else
                             {
-                                if(pai_aux->info1.palavraPortugues > (*raiz)->info1.palavraPortugues)
+                                if(info_maior(pai_aux->info1.palavraPortugues,(*raiz)->info1))
                                     info_pai = pai_aux->info1;
                                 else
                                     info_pai = pai_aux->info2;
@@ -358,9 +390,9 @@ int arvore23_remover1(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
         }
         else
         {
-            if(info < (*raiz)->info1.palavraPortugues)
+            if(info_menor(info,(*raiz)->info1))
                 removeu = arvore23_remover1(&(*raiz)->esq, info, *raiz, origem, maior);
-            else if((*raiz)->n_infos == 1 || info < (*raiz)->info2.palavraPortugues)
+            else if((*raiz)->n_infos == 1 || info_menor(info,(*raiz)->info2))
                 removeu = arvore23_remover1(&(*raiz)->cen, info, *raiz, origem, maior);
             else
                 removeu = arvore23_remover1(&(*raiz)->dir, info, *raiz, origem, maior);
@@ -369,6 +401,7 @@ int arvore23_remover1(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
     return removeu;
 }
 
+//Acho que ok
 int arvore23_remover2(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, PalavraPortugues**origem, PalavraPortugues**maior)
 {
     int removeu = 0;
@@ -424,7 +457,7 @@ int arvore23_remover2(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
                             }
                             else
                             {
-                                if(pai_aux->n_infos == 2 && pai_aux->info2.palavraPortugues < (*raiz)->info1.palavraPortugues)
+                                if(pai_aux->n_infos == 2 && info_menor(pai_aux->info2.palavraPortugues,(*raiz)->info1))
                                     info_pai = pai_aux->info2;
                                 else
                                     info_pai = pai_aux->info1;
@@ -443,9 +476,11 @@ int arvore23_remover2(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
         }
         else
         {
-            if(info < (*raiz)->info1.palavraPortugues)
+            if(info_menor(info,(*raiz)->info1))
                 removeu = arvore23_remover2(&(*raiz)->esq, info, *raiz, origem, maior);
-            else if((*raiz)->n_infos == 1 || info < (*raiz)->info2.palavraPortugues)
+
+            else if((*raiz)->n_infos == 1 || info_menor(info,(*raiz)->info2))
+
                 removeu = arvore23_remover2(&(*raiz)->cen, info, *raiz, origem, maior);
             else
                 removeu = arvore23_remover2(&(*raiz)->dir, info, *raiz, origem, maior);
@@ -454,6 +489,7 @@ int arvore23_remover2(PalavraPortugues**raiz, char* info, PalavraPortugues*pai, 
     return removeu;
 }
 
+//Acho que ok
 int arvore23_remover(PalavraPortugues**raiz, char* info)
 {   
     PalavraPortugues*maior, *posicao_juncao;
@@ -498,6 +534,7 @@ int arvore23_remover(PalavraPortugues**raiz, char* info)
     return removeu;
 }
 
+//Acho que ok
 static int balanceamento(PalavraPortugues**raiz, PalavraPortugues*filho1, PalavraPortugues**filho2, Data info, PalavraPortugues**maior)
 {
     int balanceou = 0;
@@ -511,15 +548,17 @@ static int balanceamento(PalavraPortugues**raiz, PalavraPortugues*filho1, Palavr
     return balanceou;
 }
 
+//Acho que ok
 int arvore23_rebalancear(PalavraPortugues**raiz, char* info, PalavraPortugues**maior)
 {
     int balanceou = 0;
     if(*raiz != NULL){
         if(!eh_folha(**raiz))
         {
-            if(info < (*raiz)->info1.palavraPortugues)
+            if(info_menor(info,(*raiz)->info1))
                 balanceou = arvore23_rebalancear(&((*raiz)->esq), info, maior);
-            else if((*raiz)->n_infos == 1 || info < (*raiz)->info2.palavraPortugues)
+
+            else if((*raiz)->n_infos == 1 || info_menor(info,(*raiz)->info2))
             {
                 if((*raiz)->esq->n_infos == 2 && !possivel_remover((*raiz)->cen))
                     balanceou = -1;

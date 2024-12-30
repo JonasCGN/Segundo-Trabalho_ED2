@@ -19,24 +19,33 @@ int main() {
     
 	for(int i=0;i<26;i++){
 		infos[i].palavraPortugues = palavrasPT[i];
+		insere(&raiz,infos[i]);
 	}
 
-    for (int i = 0; i < 26; i++) {
-		insere(&raiz,infos[i]);
+	exibirEmOrdem(raiz);
+    printf("\n\n");
+
+    for (int i = 25; i >= 0; i--) {
+        printf("Removendo %s\n", palavrasPT[i]);
+		
+        arvore23_remover(&raiz, palavrasPT[i]);
+		
+		exibirPreordem(raiz);
+		printf("\n\n");
     }
 
-	exibirPreordem(raiz);
-    // exibirEmOrdem(raiz);
-
-    printf("\n\n");
+    for(int i=0;i<26;i++){
+		infos[i].palavraPortugues = palavrasPT[i];
+		insere(&raiz,infos[i]);
+	}
 
     for (int i = 0; i < 26; i++) {
         printf("Removendo %s\n", palavrasPT[i]);
 		
+        arvore23_remover(&raiz, palavrasPT[i]);
+		
 		exibirPreordem(raiz);
 		printf("\n\n");
-
-        arvore23_remover(&raiz, palavrasPT[i]);
     }
 
     liberar23(raiz);
