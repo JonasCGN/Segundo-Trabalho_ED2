@@ -1,20 +1,20 @@
 #include "./arv_bb.h"
 
-int inserirPalavraIngles(PalavraIngles **ingles, char *palavra){
+int inserirPalavraIngles(InglesPortugues **ingles, char *palavra){
     int insere = 1;
     
     if(!(*ingles)){
-        PalavraIngles *novaPalavra = (PalavraIngles*)malloc(sizeof(PalavraIngles));
+        InglesPortugues *novaPalavra = (InglesPortugues*)malloc(sizeof(InglesPortugues));
         
-        novaPalavra->palavraIngles = palavra;
+        novaPalavra->palavra = palavra;
         novaPalavra->esq = NULL;
         novaPalavra->dir = NULL;
 
         *ingles = novaPalavra;
     }else{
-        if(strcmp(palavra,(*ingles)->palavraIngles) < 0){
+        if(strcmp(palavra,(*ingles)->palavra) < 0){
             insere = inserirPalavraIngles(&(*ingles)->esq,palavra);
-        }else if(strcmp(palavra,(*ingles)->palavraIngles) > 0){
+        }else if(strcmp(palavra,(*ingles)->palavra) > 0){
             insere = inserirPalavraIngles(&(*ingles)->dir,palavra);
         }else{
             insere = 0;
