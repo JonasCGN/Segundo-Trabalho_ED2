@@ -68,8 +68,8 @@ PalavraPortugues* quebraNo(PalavraPortugues **no,Data valor,Data *promove,Palavr
 }
 
 
-static int comparaPalavraNo(Data info1,Data info2,Data info3){
-	return strcmp(info1.palavraPortugues,info2.palavraPortugues) == 0 || strcmp(info1.palavraPortugues,info3.palavraPortugues) == 0;
+static int comparaPalavraNo(Data info1,Data info2,Data info3,int n_info){
+	return strcmp(info1.palavraPortugues,info2.palavraPortugues) == 0 || (n_info == 2 && strcmp(info1.palavraPortugues,info3.palavraPortugues) == 0);
 }
 
 static PalavraPortugues* noPalavra(Data info,PalavraPortugues *no,PalavraPortugues *maiorNo){
@@ -99,13 +99,13 @@ PalavraPortugues* inserirPalavraPortugues(PalavraPortugues **no, Data info, Data
 		*no = criaNo(info,NULL,NULL);
 		*noInserido = (*no);
 	}else{
-		if(comparaPalavraNo(info,(*no)->info1,(*no)->info2)){
+		if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
 			*noInserido = (*no);
 		}else if(ehFolha(*no)){
 			if((*no)->n_infos == 1){
 				adicionaChave(*no, info, NULL);
 				// *noInserido = *no;
-				if(comparaPalavraNo(info,(*no)->info1,(*no)->info2)){
+				if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
 					*noInserido = (*no);
 				}
 			}else{
@@ -138,7 +138,7 @@ PalavraPortugues* inserirPalavraPortugues(PalavraPortugues **no, Data info, Data
 				if((*no)->n_infos == 1){
 					adicionaChave(*no, *promove, maiorNo);
 
-					if(comparaPalavraNo(info,(*no)->info1,(*no)->info2)){
+					if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
 						*noInserido = (*no);
 					}
 					
