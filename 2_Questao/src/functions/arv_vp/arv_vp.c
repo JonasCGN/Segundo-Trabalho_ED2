@@ -1,7 +1,7 @@
 #include "./arv_vp.h"
 
-ArvVP* criaNo(Info valor){
-	ArvVP* no = (ArvVP*)malloc(sizeof(ArvVP));
+PalavraPortugues* criaNo(Data valor){
+	PalavraPortugues* no = (PalavraPortugues*)malloc(sizeof(PalavraPortugues));
 
 	no->info = valor;
 	no->dir = NULL;
@@ -11,7 +11,7 @@ ArvVP* criaNo(Info valor){
 	return no;
 }
 
-int cor(ArvVP *no){
+int cor(PalavraPortugues *no){
 	int cor = PRETO;
 	
 	if(no){
@@ -21,8 +21,8 @@ int cor(ArvVP *no){
 	return cor;
 }
 
-void rotacaoEsq(ArvVP **no){
-	ArvVP *aux;
+void rotacaoEsq(PalavraPortugues **no){
+	PalavraPortugues *aux;
 
 	aux = (*no)->dir;
 	
@@ -36,8 +36,8 @@ void rotacaoEsq(ArvVP **no){
 	*no = aux;
 }
 
-void rotacaoDir(ArvVP **no){
-	ArvVP *aux;
+void rotacaoDir(PalavraPortugues **no){
+	PalavraPortugues *aux;
 
 	aux = (*no)->esq;
 	
@@ -51,19 +51,19 @@ void rotacaoDir(ArvVP **no){
 	*no = aux;
 }
 
-void inverteCor(ArvVP **no){
+void inverteCor(PalavraPortugues **no){
 	if((*no)){
 		(*no)->cor = ((cor(*no) == VERMELHO) ? PRETO : VERMELHO);
 	}
 }
 
-void trocaCor(ArvVP **no){
+void trocaCor(PalavraPortugues **no){
 	inverteCor(no);
 	inverteCor(&(*no)->esq);
 	inverteCor(&(*no)->dir);
 }
 
-void balancear(ArvVP **raiz){
+void balancear(PalavraPortugues **raiz){
 	if(*raiz){
 		if(cor((*raiz)->dir) == VERMELHO && cor((*raiz)->esq) == PRETO)
 			rotacaoEsq(raiz);
@@ -76,18 +76,18 @@ void balancear(ArvVP **raiz){
 	}
 }
 
-ArvVP* insereArvVP(ArvVP **raiz, ArvVP* no){
-	ArvVP *existe;
+PalavraPortugues* inserePalavraPortugues(PalavraPortugues **raiz, PalavraPortugues* no){
+	PalavraPortugues *existe;
 	existe = NULL;
 
 	if(!(*raiz)){
 		*raiz = no;
 		existe = *raiz;
 	}else{
-		if(strcmp(no->info.palavra, (*raiz)->info.palavra) < 0)
-			existe = insereArvVP(&(*raiz)->esq,no);
-		else if(strcmp(no->info.palavra, (*raiz)->info.palavra) > 0)
-			existe = insereArvVP(&(*raiz)->dir,no);
+		if(strcmp(no->info.palavraPortugues, (*raiz)->info.palavraPortugues) < 0)
+			existe = inserePalavraPortugues(&(*raiz)->esq,no);
+		else if(strcmp(no->info.palavraPortugues, (*raiz)->info.palavraPortugues) > 0)
+			existe = inserePalavraPortugues(&(*raiz)->dir,no);
 		else
 			existe = *raiz;
 		
@@ -97,12 +97,12 @@ ArvVP* insereArvVP(ArvVP **raiz, ArvVP* no){
 	return existe;
 }
 
-void inserePortuguesIngles(ArvVP **raiz, Info info){
-	insereArvVP(raiz,criaNo(info));
+void inserePortuguesIngles(PalavraPortugues **raiz, Data info){
+	inserePalavraPortugues(raiz,criaNo(info));
 	(*raiz)->cor = PRETO;
 }
 
-void moveEsqVermelha(ArvVP **raiz){
+void moveEsqVermelha(PalavraPortugues **raiz){
 	trocaCor(raiz);
 
 	if((*raiz)->dir && cor((*raiz)->dir->esq) == VERMELHO){
@@ -112,7 +112,7 @@ void moveEsqVermelha(ArvVP **raiz){
 	}
 }
 
-void moveDirVermelha(ArvVP **raiz){
+void moveDirVermelha(PalavraPortugues **raiz){
 	trocaCor(raiz);
 
 	if((*raiz)->esq && cor((*raiz)->esq->esq) == VERMELHO){
@@ -121,7 +121,7 @@ void moveDirVermelha(ArvVP **raiz){
 	}
 }
 
-void removeMenor(ArvVP **raiz){
+void removeMenor(PalavraPortugues **raiz){
 	if(!((*raiz)->esq)){
 		free(*raiz);
 		*raiz = NULL;
@@ -134,8 +134,8 @@ void removeMenor(ArvVP **raiz){
 	}
 }
 
-ArvVP *procuraMenor(ArvVP *raiz){
-	ArvVP *menor;
+PalavraPortugues *procuraMenor(PalavraPortugues *raiz){
+	PalavraPortugues *menor;
 	menor = raiz;
 
 	if(raiz)
@@ -146,25 +146,24 @@ ArvVP *procuraMenor(ArvVP *raiz){
 	return menor;
 }
 
-static int verificaPalavraUnidade(ArvVP *raiz,char *palavra, int unidade){
-	return (strcmp(raiz->info.palavra, palavra) == 0 && raiz->info.unidade == unidade);
+static int verificaPalavraUnidade(PalavraPortugues *raiz,char *palavra){
+	return (strcmp(raiz->info.palavraPortugues, palavra) == 0);
 }
 
-int removerNoArvVP(ArvVP **raiz, char *valor,int unidade){
+int removerNoPalavraPortugues(PalavraPortugues **raiz, char *valor){
 	int existe = 0;
 
 	if(*raiz){
-		if(strcmp(valor, (*raiz)->info.palavra) < 0){
+		if(strcmp(valor, (*raiz)->info.palavraPortugues) < 0){
 			if((*raiz)->esq && cor((*raiz)->esq) == PRETO && cor((*raiz)->esq->esq) == PRETO)
 				moveEsqVermelha(raiz);
 
-			existe = removerNoArvVP(&(*raiz)->esq,valor,unidade);
+			existe = removerNoPalavraPortugues(&(*raiz)->esq,valor);
 		}else{
 			if(cor((*raiz)->esq) == VERMELHO)
 				rotacaoDir(raiz);
 			
-			if(verificaPalavraUnidade(*raiz,valor,unidade) && (*raiz)->dir == NULL){
-				removeArvoreBB((*raiz)->info.palavrasIngles,unidade);
+			if(verificaPalavraUnidade(*raiz,valor) && (*raiz)->dir == NULL){
 
 				free(*raiz);
 				*raiz = NULL;
@@ -174,10 +173,9 @@ int removerNoArvVP(ArvVP **raiz, char *valor,int unidade){
 				if((*raiz)->dir && cor((*raiz)->dir) == PRETO && cor((*raiz)->dir->esq) == PRETO)
 					moveDirVermelha(raiz);
 
-				if(verificaPalavraUnidade(*raiz,valor,unidade)){
-					removeArvoreBB((*raiz)->info.palavrasIngles,unidade);
+				if(verificaPalavraUnidade(*raiz,valor)){
 					
-					ArvVP *aux;
+					PalavraPortugues *aux;
 					aux = procuraMenor((*raiz)->dir);
 					
 					(*raiz)->info = aux->info;
@@ -185,7 +183,7 @@ int removerNoArvVP(ArvVP **raiz, char *valor,int unidade){
 
 					existe = 1;
 				}else{
-					existe = removerNoArvVP(&(*raiz)->dir, valor,unidade);
+					existe = removerNoPalavraPortugues(&(*raiz)->dir, valor);
 				}
 			}
 		}
@@ -197,28 +195,28 @@ int removerNoArvVP(ArvVP **raiz, char *valor,int unidade){
 	return existe;
 }
 
-void removePortuguesIngles(ArvVP **raiz, char *valor,int unidade){
-	removerNoArvVP(raiz,valor,unidade);
+void removePortuguesIngles(PalavraPortugues **raiz, char *valor){
+	removerNoPalavraPortugues(raiz,valor);
 	if(*raiz){
 		(*raiz)->cor = PRETO;
 	}
 }
 
-void exibirArvore(ArvVP *raiz){
+void exibirArvore(PalavraPortugues *raiz){
 	if(raiz){
 		exibirArvore(raiz->esq);
 		printf("Cor - %d\n", raiz->cor);
-		printf("Valor - %s\n", raiz->info.palavra);
+		printf("Valor - %s\n", raiz->info.palavraPortugues);
 		exibirArvore(raiz->dir);
 	}
 }
 
-void liberarArvVP(ArvVP *raiz){
+void liberarPalavraPortugues(PalavraPortugues *raiz){
 	if(raiz){
-		liberarArvVP(raiz->esq);
-		liberarArvVP(raiz->dir);
+		liberarPalavraPortugues(raiz->esq);
+		liberarPalavraPortugues(raiz->dir);
 
-		liberaArvoreBB(raiz->info.palavrasIngles);
+		liberaArvoreBB(raiz->info.traducaoIngles);
 
 		free(raiz);
 		raiz = NULL;

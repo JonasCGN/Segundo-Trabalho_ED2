@@ -1,19 +1,19 @@
 #include "./utils/utils.h"
 
 void teste(){
-	ArvVP *raiz;
+	PalavraPortugues *raiz;
 	raiz = NULL;
 
-	Info info[] = {
-		{"abobora", 2,NULL},
-		{"cachorro", 15, NULL},
-		{"papagaio", 7, NULL},
-		{"ola", 2,NULL},
-		{"zebra",2, NULL},
-		{"casa",2, NULL},
-		{"pera",2, NULL},
-		{"uva", 2,NULL},
-		{"gato", 10,NULL}
+	Data info[] = {
+		{"abobora", NULL},
+		{"cachorro", NULL},
+		{"papagaio", NULL},
+		{"ola", NULL},
+		{"zebra", NULL},
+		{"casa", NULL},
+		{"pera", NULL},
+		{"uva", NULL},
+		{"gato", NULL}
 	};
 	int quant = sizeof(info) / sizeof(info[0]);
 	printf("%d\n",quant);
@@ -21,11 +21,13 @@ void teste(){
 		inserePortuguesIngles(&raiz,info[i]);
 	}
 
-	removePortuguesIngles(&raiz,"gato",10);
-	removePortuguesIngles(&raiz,"papagaio",7);
+	char palavra1[] = "gato";
+	char palavra2[] = "papagaio";
+
+	removePortuguesIngles(&raiz,palavra1);
+	removePortuguesIngles(&raiz,palavra2);
 
 	exibeTodasPalavras(raiz);
-
 }
 
 int menuOpc(){
@@ -45,7 +47,7 @@ int menuOpc(){
 }
 
 void menu(){
-	ArvVP *raiz;
+	PalavraPortugues *raiz;
 	raiz = NULL;
 	recuperaDados(&raiz);
 
@@ -96,7 +98,7 @@ void menu(){
 		}
 	}while(opc != 0);
 
-	liberarArvVP(raiz);
+	liberarPalavraPortugues(raiz);
 }
 
 int main(){

@@ -2,5 +2,5 @@
 
 #include "../../../utils/utils.h"
 
-void exibePalavraIngles(InglesPortugues *raiz);
-void exibePalavrasInglesUnidade(InglesPortugues *raiz, int unidade);
+void exibePalavraIngles(PalavraIngles *raiz);
+void exibePalavrasInglesUnidade(PalavraIngles *raiz, int unidade);

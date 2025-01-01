@@ -2,5 +2,4 @@
 
 #include "../../utils/utils.h"
 
-void recuperaDados(ArvVP **raiz);
-void salvaDados(ArvVP *raiz);
+void recuperaDados(PalavraPortugues **raiz);

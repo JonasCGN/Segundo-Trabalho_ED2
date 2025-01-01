@@ -1,13 +1,13 @@
 #include "./exibicao_arv_vp.h"
 
-void exibeArvoreVP(ArvVP *raiz, int unidade){
+void exibeArvoreVP(PalavraPortugues *raiz, int unidade){
 	if(raiz){
 		exibeArvoreVP(raiz->esq,unidade);
 		
-		if(raiz->info.unidade == unidade){
+		if(verificaInglesUnidade(raiz->info.traducaoIngles,unidade)){
 			printf("-----------------------------------------\n");
-			printf("Portugues \t %s\n", raiz->info.palavra);
-			exibePalavrasInglesUnidade(raiz->info.palavrasIngles,unidade);
+			printf("Portugues \t %s\n", raiz->info.palavraPortugues);
+			exibePalavrasInglesUnidade(raiz->info.traducaoIngles,unidade);
 			printf("-----------------------------------------\n");
 		}
 
@@ -15,13 +15,13 @@ void exibeArvoreVP(ArvVP *raiz, int unidade){
 	}
 }
 
-void exibePalavraPortuguesIngles(ArvVP *raiz, char *palavra){
+void exibePalavraPortuguesIngles(PalavraPortugues *raiz, char *palavra){
 	if(raiz){
 		exibePalavraPortuguesIngles(raiz->esq,palavra);
-		if(strcmp(palavra, raiz->info.palavra) == 0){
+		if(strcmp(palavra, raiz->info.palavraPortugues) == 0){
 			printf("-----------------------------------------\n");
-			printf("Portugues \t %s\n", raiz->info.palavra);
-			exibePalavraIngles(raiz->info.palavrasIngles);
+			printf("Portugues \t %s\n", raiz->info.palavraPortugues);
+			exibePalavraIngles(raiz->info.traducaoIngles);
 			printf("-----------------------------------------\n");
 		}
 
@@ -29,13 +29,12 @@ void exibePalavraPortuguesIngles(ArvVP *raiz, char *palavra){
 	}
 }
 
-void exibeTodasPalavras(ArvVP *raiz){
+void exibeTodasPalavras(PalavraPortugues *raiz){
 	if(raiz){
 		exibeTodasPalavras(raiz->esq);
 		printf("-----------------------------------------\n");
-		printf("Portugues: %s\n",raiz->info.palavra);
-		printf("Unidade: %d\n",raiz->info.unidade);
-		exibePalavraIngles(raiz->info.palavrasIngles);
+		printf("Portugues: %s\n",raiz->info.palavraPortugues);
+		exibePalavraIngles(raiz->info.traducaoIngles);
 		printf("-----------------------------------------\n");
 		exibeTodasPalavras(raiz->dir);
 	}

@@ -1,26 +1,31 @@
 #pragma once
 
-typedef struct infoArvBB{
-    char palavra[50];
+typedef struct listaUnidade{
     int unidade;
+
+    struct listaUnidade *prox;
+}ListaUnidade;
+
+typedef struct infoArvBB{
+    char palavraIngles[50];
+    ListaUnidade *unidades;
 }InfoArvBB;
 
-
-typedef struct inglesPortugues{
+typedef struct palavraIngles{
     InfoArvBB info;
 
-    struct inglesPortugues *esq,*dir;
-}InglesPortugues;
+    struct palavraIngles *dir,*esq;
+}PalavraIngles;
 
-typedef struct info{
-    char palavra[50];
-    int unidade;
-    InglesPortugues *palavrasIngles;
-}Info;
+typedef struct data{
+    char palavraPortugues[50];
 
-typedef struct  arvVP{
-	Info info;
+    PalavraIngles *traducaoIngles;
+}Data;
+
+typedef struct  palavraPortugues{
+	Data info;
 
 	int cor;
-	struct arvVP *esq,*dir;
-}ArvVP;
+	struct palavraPortugues *esq,*dir;
+}PalavraPortugues;

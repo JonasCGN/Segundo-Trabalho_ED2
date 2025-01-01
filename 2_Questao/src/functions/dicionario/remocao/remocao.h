@@ -2,5 +2,5 @@
 
 #include "../../../utils/utils.h"
 
-void menuRemoverPalavraIngles(ArvVP *arvVP);
-void menuRemoverPalavraPortugues(ArvVP **arvVP);
+void menuRemoverPalavraIngles(PalavraPortugues *arvVP);
+void menuRemoverPalavraPortugues(PalavraPortugues **arvVP);

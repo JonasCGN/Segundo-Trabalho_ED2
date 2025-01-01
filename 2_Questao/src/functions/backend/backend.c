@@ -1,21 +1,20 @@
 #include "./backend.h"
 
-Info criaInfoVP(char *palavra,int unidade){
-	Info info;
+Data criaInfoVP(char *palavra){
+	Data info;
 
-	sprintf(info.palavra,"%s",palavra);
-	info.unidade = unidade;
-	info.palavrasIngles = NULL;
+	sprintf(info.palavraPortugues,"%s",palavra);
+	info.traducaoIngles = NULL;
 
 	return info;
 }
 
-InfoArvBB criaInfoBB(char *palavra,int unidade){
+InfoArvBB criaInfoBB(char *palavra){
 	InfoArvBB info;
 
-	sprintf(info.palavra,"%s",palavra);
-	info.unidade = unidade;
-
+	sprintf(info.palavraIngles,"%s",palavra);
+	info.unidades = NULL;
+	
 	return info;
 }
 
@@ -23,10 +22,10 @@ char* alocarString(int tamanho){
 	return (char*)calloc((unsigned int)tamanho,sizeof(char));
 }
 
-void recuperaDados(ArvVP **raiz){
+void recuperaDados(PalavraPortugues **raiz){
 	FILE *arq;
 	arq = fopen("./src/database/teste.txt","r");
-	ArvVP *noEncontrado;
+	PalavraPortugues *noEncontrado;
 
 	if(!arq){
 		printf("Arquivo nao encontrado!");
@@ -52,13 +51,13 @@ void recuperaDados(ArvVP **raiz){
 						strncpy(pt_br,pt + 1,strlen(pt)); 
 
 						if(strlen(pt_br)){
-							Info info = criaInfoVP(pt_br,unidade);
-							noEncontrado = insereArvVP(raiz,criaNo(info));
+							Data info = criaInfoVP(pt_br);
+							noEncontrado = inserePalavraPortugues(raiz,criaNo(info));
 
 							InfoArvBB infoBB;
-							infoBB = criaInfoBB(p_en,unidade);
+							infoBB = criaInfoBB(p_en);
 							
-							inserirPalavraIngles(&(noEncontrado->info.palavrasIngles),infoBB);
+							inserirPalavraIngles(&(noEncontrado->info.traducaoIngles),infoBB,unidade);
 						}
 					}
 				}

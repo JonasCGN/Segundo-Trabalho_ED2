@@ -2,8 +2,14 @@
 
 #include "../../utils/utils.h"
 
-int inserirPalavraIngles(InglesPortugues **ingles, InfoArvBB info);
-int removerPalavraIngles(InglesPortugues **raiz, char *palavra, int unidade);
+int inserirPalavraIngles(PalavraIngles **ingles, InfoArvBB info,int unidade);
+int removerPalavraIngles(PalavraIngles**raiz, PalavraIngles *palavra);
 
-void removeArvoreBB(InglesPortugues *raiz, int unidade);
-void liberaArvoreBB(InglesPortugues *raiz);
+int removePalavraInglesUnidade(PalavraIngles**raiz, int unidade);
+
+void exibirENOrdem(PalavraIngles* raiz);
+int verificaInglesUnidade(PalavraIngles* raiz,int unidade);
+void exibeInglesUnidade(PalavraIngles* raiz,int unidade);
+
+// void removeArvoreBB(PalavraIngles *raiz, int unidade);
+void liberaArvoreBB(PalavraIngles *raiz);

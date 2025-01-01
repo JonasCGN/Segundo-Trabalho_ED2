@@ -1,20 +1,18 @@
 #include "./exibicao_arv_bb.h"
 
-void exibePalavraIngles(InglesPortugues *raiz){
+void exibePalavraIngles(PalavraIngles *raiz){
 	if(raiz){
 		exibePalavraIngles(raiz->esq);
-		printf("Ingles \t\t %s\n", raiz->info.palavra);
-		printf("Unidade \t %d\n", raiz->info.unidade);
+		printf("Ingles \t\t %s\n", raiz->info.palavraIngles);
 		exibePalavraIngles(raiz->dir);
 	}
 }
 
-void exibePalavrasInglesUnidade(InglesPortugues *raiz, int unidade){
+void exibePalavrasInglesUnidade(PalavraIngles *raiz, int unidade){
 	if(raiz){
 		exibePalavrasInglesUnidade(raiz->esq,unidade);
-		if(unidade == raiz->info.unidade){
-			printf("Ingles \t\t %s\n", raiz->info.palavra);
-			printf("Unidade \t %d\n", raiz->info.unidade);
+		if(buscarUnidadeLista(raiz->info.unidades,unidade)){
+			printf("Ingles \t\t %s\n", raiz->info.palavraIngles);
 		}
 		exibePalavrasInglesUnidade(raiz->dir,unidade);
 	}

@@ -14,3 +14,5 @@
 #include "../functions/dicionario/exibicao_arv_bb/exibicao_arv_bb.h"
 #include "../functions/dicionario/exibicao_arv_vp/exibicao_arv_vp.h"
 #include "../functions/dicionario/remocao/remocao.h"
+
+#include "../functions/lista/lista.h"

@@ -1,25 +1,24 @@
-
 #pragma once
 
 #include "../../utils/utils.h"
 
-int cor(ArvVP *no);
+int cor(PalavraPortugues *no);
 
-void rotacaoEsq(ArvVP **no);
-void rotacaoDir(ArvVP **no);
-void inverteCor(ArvVP **no);
+void rotacaoEsq(PalavraPortugues **no);
+void rotacaoDir(PalavraPortugues **no);
+void inverteCor(PalavraPortugues **no);
 
-void trocaCor(ArvVP **no);
-ArvVP* criaNo(Info valor);
-ArvVP* insereArvVP(ArvVP **raiz, ArvVP* no);
-void inserePortuguesIngles(ArvVP **raiz, Info info);
+void trocaCor(PalavraPortugues **no);
+PalavraPortugues* criaNo(Data valor);
+PalavraPortugues* inserePalavraPortugues(PalavraPortugues **raiz, PalavraPortugues* no);
+void inserePortuguesIngles(PalavraPortugues **raiz, Data info);
 
-void exibirArvore(ArvVP *raiz);
-void liberarArvVP(ArvVP *raiz);
+void exibirArvore(PalavraPortugues *raiz);
+void liberarPalavraPortugues(PalavraPortugues *raiz);
 
-void moveEsqVermelha(ArvVP **raiz);
-void moveDirVermelha(ArvVP **raiz);
-void removeMenor(ArvVP **raiz);
-ArvVP *procuraMenor(ArvVP *raiz);
-int removerNoArvVP(ArvVP **raiz, char *valor,int unidade);
-void removePortuguesIngles(ArvVP **raiz, char *valor,int unidade);
+void moveEsqVermelha(PalavraPortugues **raiz);
+void moveDirVermelha(PalavraPortugues **raiz);
+void removeMenor(PalavraPortugues **raiz);
+PalavraPortugues *procuraMenor(PalavraPortugues *raiz);
+int removerNoPalavraPortugues(PalavraPortugues **raiz, char *valor);
+void removePortuguesIngles(PalavraPortugues **raiz, char *valor);
