@@ -6,15 +6,19 @@ typedef struct listaUnidade{
     struct listaUnidade *prox;
 }ListaUnidade;
 
+typedef struct infoArvBB{
+    char palavraIngles[50];
+    ListaUnidade *unidades;
+}InfoArvBB;
+
 typedef struct palavraIngles{
-    char *palavraIngles;
+    InfoArvBB info;
 
     struct palavraIngles *dir,*esq;
 }PalavraIngles;
 
 typedef struct data{
-    char *palavraPortugues;
-    int unidade;
+    char palavraPortugues[50];
 
     PalavraIngles *traducaoIngles;
 }Data;

@@ -10,6 +10,11 @@
         "stdlib.h": "c",
         "stdio.h": "c",
         "utils.h": "c",
-        "arv_2_3.h": "c"
+        "arv_2_3.h": "c",
+        "backend.h": "c",
+        "lista.h": "c",
+        "arv_bb.h": "c",
+        "__teste": "cpp",
+        "remocao.h": "c"
     }
 }

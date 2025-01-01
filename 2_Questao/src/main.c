@@ -100,8 +100,8 @@ void menu(){
 }
 
 int main(){
-	teste();
-	// menu();
+	// teste();
+	menu();
 
 	return 0;
 }	
