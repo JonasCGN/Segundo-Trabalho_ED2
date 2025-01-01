@@ -3,7 +3,9 @@
 void exibePalavraIngles(PalavraIngles *raiz){
 	if(raiz){
 		exibePalavraIngles(raiz->esq);
-		printf("Ingles \t\t %s\n", raiz->info.palavraIngles);
+		printf("Ingles \t\t %s ", raiz->info.palavraIngles);
+		exibirLista(raiz->info.unidades);
+		printf("\n");
 		exibePalavraIngles(raiz->dir);
 	}
 }

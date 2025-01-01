@@ -76,6 +76,7 @@ int removeInglesPortugues(PalavraPortugues **raiz,char *palavra,int unidade){
 			verifica = removePalavraInglesUnidade(&(*raiz)->info.traducaoIngles,unidade);
 		}
 		
+
 		if(verifica){
 			if(!(*raiz)->info.traducaoIngles){
 				removerNoPalavraPortugues(raiz,(*raiz)->info.palavraPortugues);

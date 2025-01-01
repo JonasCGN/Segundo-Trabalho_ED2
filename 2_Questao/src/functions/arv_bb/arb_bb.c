@@ -98,8 +98,10 @@ int removePalavraInglesUnidade(PalavraIngles **raiz,int unidade){
     if(*raiz){
         
         if(buscarUnidadeLista((*raiz)->info.unidades,unidade)){
-            removerPalavraIngles(raiz,(*raiz));
-            verifica = 1;
+            if((verifica = removerUnidadeLista(&((*raiz)->info.unidades),unidade))){
+                if(!((*raiz)->info.unidades))
+                    verifica = removerPalavraIngles(raiz,(*raiz));
+            }
         }else{
             verifica = removePalavraInglesUnidade(&(*raiz)->esq,unidade);
             if(!verifica){
