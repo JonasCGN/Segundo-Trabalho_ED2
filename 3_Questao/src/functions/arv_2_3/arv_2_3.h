@@ -2,13 +2,13 @@
 
 #include "../../utils/utils.h"
 
-PortugesIngles* criaNo(Info info,PortugesIngles *filhoEsq,PortugesIngles *filhoCen);
-PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIngles **filho);
-void adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho);
-int ehFolha(PortugesIngles *no);
-PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *promove, PortugesIngles **Pai);
+Unidade* criaNo(Data info,Unidade *filhoEsq,Unidade *filhoCen);
+Unidade* quebraNo(Unidade **no,Data valor,Data *promove,Unidade **filho);
+void adicionaChave(Unidade *no,Data info,Unidade *filho);
+int ehFolha(Unidade *no);
+Unidade* inserirPalavraPortugues(Unidade **no, Data info, Data *promove, Unidade **Pai);
 
-void exibirPreordem(PortugesIngles *ptIn);
-void exibirEmOrdem(PortugesIngles *ptIn);
+void exibirPreordem(Unidade *ptIn);
+void exibirEmOrdem(Unidade *ptIn);
 
-void liberaArvore23(PortugesIngles *raiz);
+void liberaArvore23(Unidade *raiz);

@@ -1,19 +1,13 @@
 #pragma once
 
-typedef struct inglesPortugues{
-    char *palavra;
-    struct inglesPortugues *dir,*esq;
-}InglesPortugues;
+typedef struct data{
+    int ini,fim;
+    int status;
+}Data;
 
-typedef struct info{
-    char *palavraPortugues;
-    int unidade;
-    InglesPortugues *traducaoIngles;
-}Info;
+typedef struct unidade{
+    Data info1,info2;
 
-typedef struct portuguesIngles{
-    Info info1,info2;
-
-    int qtdInfo;
-    struct portuguesIngles *esq,*cen,*dir;
-}PortugesIngles;
+    int n_infos;
+    struct unidade *esq,*cen,*dir;
+}Unidade;

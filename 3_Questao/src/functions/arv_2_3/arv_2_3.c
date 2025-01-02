@@ -1,12 +1,12 @@
 #include "arv_2_3.h"
 
-int ehFolha(PortugesIngles *no){
+int ehFolha(Unidade *no){
 	return no->esq == NULL;
 }
 
-PortugesIngles* criaNo(Info info, PortugesIngles *filhoEsq, PortugesIngles *filhoCen){
-	PortugesIngles *no;
-	no = (PortugesIngles*)malloc(sizeof(PortugesIngles));
+Unidade* criaNo(Data info, Unidade *filhoEsq, Unidade *filhoCen){
+	Unidade *no;
+	no = (Unidade*)malloc(sizeof(Unidade));
 	if(!no){
 		printf("Nao foi possivel criar no\n");
 	}
@@ -15,14 +15,14 @@ PortugesIngles* criaNo(Info info, PortugesIngles *filhoEsq, PortugesIngles *filh
 	no->esq = filhoEsq;
 	no->cen = filhoCen;
 
-	no->qtdInfo = 1;
+	no->n_infos = 1;
 
 	return no;
 }
 
-void adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho){
+void adicionaChave(Unidade *no,Data info,Unidade *filho){
 	
-	if(strcmp(info.palavraPortugues, no->info1.palavraPortugues) > 0){
+	if(info.ini > no->info1.ini){
 		no->info2 = info;
 		no->dir = filho;
 	}else{
@@ -32,20 +32,20 @@ void adicionaChave(PortugesIngles *no,Info info,PortugesIngles *filho){
 		no->cen = filho;
 	}
 
-	no->qtdInfo = 2;
+	no->n_infos = 2;
 }
 
-PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIngles **filho){
-	PortugesIngles *maior;
+Unidade* quebraNo(Unidade **no,Data valor,Data *promove,Unidade **filho){
+	Unidade *maior;
 
-	if(strcmp(valor.palavraPortugues, (*no)->info2.palavraPortugues) > 0){
+	if(valor.ini > (*no)->info2.ini){
 		*promove = (*no)->info2;
 		if(filho)
 			maior = criaNo(valor, (*no)->dir, *filho);
 		else
 			maior = criaNo(valor, (*no)->dir, NULL);
 
-	}else if(strcmp(valor.palavraPortugues, (*no)->info1.palavraPortugues) > 0){
+	}else if(valor.ini > (*no)->info1.ini){
 		*promove = valor;
 		
 		if(filho)
@@ -63,20 +63,20 @@ PortugesIngles* quebraNo(PortugesIngles **no,Info valor,Info *promove,PortugesIn
 			(*no)->cen = NULL;
 	}
 
-	(*no)->qtdInfo = 1;
+	(*no)->n_infos = 1;
 	return maior;
 }
 
-PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *promove, PortugesIngles **pai){
-	PortugesIngles *maiorNo;
-	Info promove1;
+Unidade* inserirPalavraPortugues(Unidade **no, Data info, Data *promove, Unidade **pai){
+	Unidade *maiorNo;
+	Data promove1;
 	maiorNo = NULL;
 
 	if(*no == NULL){
 		*no = criaNo(info,NULL,NULL);
 	}else{
 		if(ehFolha(*no)){
-			if((*no)->qtdInfo == 1){
+			if((*no)->n_infos == 1){
 				adicionaChave(*no, info, NULL);
 			}else{
 				maiorNo = quebraNo(no, info, promove,NULL);
@@ -86,10 +86,10 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 				}
 			}
 		}else{
-			if(strcmp(info.palavraPortugues, (*no)->info1.palavraPortugues) < 0){
+			if(info.ini < (*no)->info1.ini){
 				maiorNo = inserirPalavraPortugues(&((*no)->esq), info, promove, no);
 			}else{
-				if(((*no)->qtdInfo == 1) || (strcmp(info.palavraPortugues, (*no)->info2.palavraPortugues) < 0)){
+				if(((*no)->n_infos == 1) || (info.ini < (*no)->info2.ini)){
 					maiorNo = inserirPalavraPortugues(&((*no)->cen), info, promove,no);
 				}else{
 					maiorNo = inserirPalavraPortugues(&((*no)->dir), info, promove,no);
@@ -97,7 +97,7 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 			}
 
 			if(maiorNo){
-				if((*no)->qtdInfo == 1){
+				if((*no)->n_infos == 1){
 					adicionaChave(*no, *promove, maiorNo);
 					maiorNo = NULL;
 				}else{
@@ -115,46 +115,47 @@ PortugesIngles* inserirPalavraPortugues(PortugesIngles **no, Info info, Info *pr
 	return maiorNo;
 }
 
-void exibirPreordem(PortugesIngles *ptIn){
-	if(ptIn){
-		printf("%s\n", ptIn->info1.palavraPortugues);
-		if(ptIn->qtdInfo == 2){
-			printf("%s\n", ptIn->info2.palavraPortugues);
+void exibeInfo(Data info){
+	printf("%d | %d - %d\n",info.ini,info.fim,info.status);
+}
+
+void exibirPreordem(Unidade *arv23){
+	if(arv23){
+		exibeInfo(arv23->info1);
+		if(arv23->n_infos == 2){
+			exibeInfo(arv23->info2);
 		}
 
-		exibirPreordem(ptIn->esq);
-		exibirPreordem(ptIn->cen);
-		if(ptIn->qtdInfo == 2)
-			exibirPreordem(ptIn->dir);
+		exibirPreordem(arv23->esq);
+		exibirPreordem(arv23->cen);
+		if(arv23->n_infos == 2)
+			exibirPreordem(arv23->dir);
 	}
 }
 
-void exibirEmOrdem(PortugesIngles *ptIn){
-	if(ptIn){
-		exibirEmOrdem(ptIn->esq);
+void exibirEmOrdem(Unidade *arv23){
+	if(arv23){
+		exibirEmOrdem(arv23->esq);
 
-		printf("%s\n", ptIn->info1.palavraPortugues);
+		exibeInfo(arv23->info1);
 
-		exibirEmOrdem(ptIn->cen);
-		if(ptIn->qtdInfo == 2){
-			printf("%s\n", ptIn->info2.palavraPortugues);
-			exibirEmOrdem(ptIn->dir);
+		exibirEmOrdem(arv23->cen);
+		if(arv23->n_infos == 2){
+			exibeInfo(arv23->info2);
+			exibirEmOrdem(arv23->dir);
 		}
 	}
 }
 
-void liberaArvore23(PortugesIngles *raiz){
+void liberaArvore23(Unidade *raiz){
 	if(raiz){
 
 		liberaArvore23(raiz->esq);
 		liberaArvore23(raiz->cen);
-		if(raiz->qtdInfo == 2){
+		if(raiz->n_infos == 2){
 			liberaArvore23(raiz->dir);
-			free(raiz);
-			raiz = NULL;
-		}else{
-			free(raiz);
-			raiz = NULL;
 		}
+		free(raiz);
+		raiz = NULL;
 	}
 }
