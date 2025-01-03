@@ -110,6 +110,11 @@ void teste1(){
 	exibirEmOrdem(unidadeAlocao);
 	modificaNo(&unidadeAlocao,50,LIVRE);
 	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,50,LIVRE);
 	
 	// modificaNo(&unidadeAlocao,87,OCUPADO);
 
@@ -119,8 +124,8 @@ void teste1(){
 int main(){
 	// teste();
 
-	menu();
+	// menu();
 
-	// teste1();
+	teste1();
 	return 0;
 }

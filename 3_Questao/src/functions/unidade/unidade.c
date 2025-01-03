@@ -4,12 +4,6 @@ static int quantidadeEspaco(Data info){
 	return (info.fim - info.ini) + 1;
 }
 
-static void exibeInfo(Data *unidade){
-	if(unidade){
-		printf("%d | %d\n",unidade->ini,unidade->fim);
-	}
-}
-
 static Data *infoRequerida(Data *info1){
 	return info1;
 }
@@ -135,14 +129,14 @@ void atualizarNoTamanhoMax(Unidade **unidade,Data **atual,Data **antecessor,Data
 	if(!(*antecessor)){
 		(*atual)->fim = (**sucessor).fim;
 		(*atual)->status = !((*atual)->status);
-		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**sucessor).ini));
+		arvore23_remover_ini(unidade,(**sucessor).ini);
 	}else if(!(*sucessor)){
 		(*antecessor)->fim = (**atual).fim;
-		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**atual).ini));
+		arvore23_remover_ini(unidade,(**atual).ini);
 	}else{
 		(*antecessor)->fim = (**sucessor).fim;
-		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**sucessor).ini));
-		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**atual).ini));
+		arvore23_remover_ini(unidade,(**sucessor).ini);
+		arvore23_remover_ini(unidade,(**atual).ini);
 	}
 }
 
@@ -169,19 +163,10 @@ void modificaNo(Unidade **unidade,int tamanho,int status){
 	if(noAtual){
 		antecessor = buscaFim(*unidade, antecessorInfo(aux));
 		sucessor = buscaInicio(*unidade, sucessorInfo(aux));
-
+		
+		infoAux = infoCorretaIni(noAtual,aux.ini);
 		infoAntecessor = infoCorretaFim(antecessor, antecessorInfo(aux));
 		infoSucessor = infoCorretaIni(sucessor, sucessorInfo(aux));
-
-		printf("ATUAL\n");
-		infoAux = infoCorretaIni(noAtual,aux.ini);
-		exibeInfo(infoAux);
-
-		printf("ANTECESSOR\n");
-		exibeInfo(infoAntecessor);
-
-		printf("SUCESSOR\n");
-		exibeInfo(infoSucessor);
 
 		if(tamanho == quantidadeEspaco(aux)){
 			atualizarNoTamanhoMax(unidade,&infoAux,&infoAntecessor,&infoSucessor);
