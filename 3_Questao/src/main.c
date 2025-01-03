@@ -5,7 +5,7 @@ void insere(Unidade **pi,Data info){
 	Unidade *raiz;
 	raiz = NULL;
 
-	inserirPalavraPortugues(pi,info,&promove,&raiz);
+	inserirUnidade(pi,info,&promove,&raiz);
 }
 
 void teste(){
@@ -87,12 +87,16 @@ void teste1(){
 	Unidade *unidadeAlocao;
 	unidadeAlocao = NULL;
 
-	int qtd_info = 9;
 
 	int ini = 0,fim = 0,status = 0;
+	int list[] = {
+		8,20,30
+	};
+	
+	int qtd_info = sizeof(list) / sizeof(int);
 
 	for(int i=0;i<qtd_info;i++){
-		fim = ini + rand() % 100;
+		fim = list[i];
 		// if(i == qtd_info - 1){
 		// 	fim += 100;
 		// }
@@ -108,13 +112,15 @@ void teste1(){
 
 	// modificaNo(&unidadeAlocao,87,LIVRE);
 	exibirEmOrdem(unidadeAlocao);
-	modificaNo(&unidadeAlocao,50,LIVRE);
-	modificaNo(&unidadeAlocao,50,LIVRE);
-	modificaNo(&unidadeAlocao,50,LIVRE);
-	modificaNo(&unidadeAlocao,50,LIVRE);
-	modificaNo(&unidadeAlocao,50,LIVRE);
-	modificaNo(&unidadeAlocao,50,LIVRE);
-	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,10,LIVRE);
+	// modificaNo(&unidadeAlocao,84,LIVRE);
+
+	// modificaNo(&unidadeAlocao,50,LIVRE);
+	// modificaNo(&unidadeAlocao,50,LIVRE);
+	// modificaNo(&unidadeAlocao,50,LIVRE);
+	// modificaNo(&unidadeAlocao,50,LIVRE);
+	// modificaNo(&unidadeAlocao,50,LIVRE);
+	// modificaNo(&unidadeAlocao,50,LIVRE);
 	
 	// modificaNo(&unidadeAlocao,87,OCUPADO);
 
@@ -124,8 +130,8 @@ void teste1(){
 int main(){
 	// teste();
 
-	// menu();
+	menu();
 
-	teste1();
+	// teste1();
 	return 0;
 }

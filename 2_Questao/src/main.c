@@ -49,7 +49,7 @@ int menuOpc(){
 void menu(){
 	PalavraPortugues *raiz;
 	raiz = NULL;
-	recuperaDados(&raiz);
+	recuperaDados("./src/database/teste.txt",&raiz);
 
 	exibeTodasPalavras(raiz);
 
@@ -103,7 +103,9 @@ void menu(){
 
 int main(){
 	// teste();
-	menu();
+	// menu();
+
+	calcularTempoBusca();
 
 	return 0;
 }	

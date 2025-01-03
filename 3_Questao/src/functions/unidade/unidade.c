@@ -1,5 +1,13 @@
 #include "unidade.h"
 
+static void insere(Unidade **pi,Data info){
+	Data promove;
+	Unidade *raiz;
+	raiz = NULL;
+
+	inserirUnidade(pi,info,&promove,&raiz);
+}
+
 static int quantidadeEspaco(Data info){
 	return (info.fim - info.ini) + 1;
 }
@@ -44,6 +52,17 @@ static int antecessorInfo(Data info){
 
 static int sucessorInfo(Data info){
 	return info.fim + 1;
+}
+
+char *statusInfo(int status){
+	char *palavra;
+	if(status){
+		palavra = "Livre";
+	}else{
+		palavra = "Ocupado";
+	}
+
+	return palavra;
 }
 
 Data buscaBlocoTamanho(Unidade *unidade,int quant,int status, Unidade **noEscolhido){
@@ -126,7 +145,9 @@ void exibeInfoUnidade(Unidade *unidade){
 }
 
 void atualizarNoTamanhoMax(Unidade **unidade,Data **atual,Data **antecessor,Data **sucessor){
-	if(!(*antecessor)){
+	if(!(*antecessor) && !(*sucessor)){
+		(*atual)->status = !((*atual)->status);
+	}else if(!(*antecessor)){
 		(*atual)->fim = (**sucessor).fim;
 		(*atual)->status = !((*atual)->status);
 		arvore23_remover_ini(unidade,(**sucessor).ini);
@@ -140,8 +161,11 @@ void atualizarNoTamanhoMax(Unidade **unidade,Data **atual,Data **antecessor,Data
 	}
 }
 
-void atualizarNoTamanhoMin(int tam,Data **atual,Data **antecessor,Data **sucessor){
-	if(!(*antecessor)){
+void atualizarNoTamanhoMin(int tam,Unidade **unidade,Data **atual,Data **antecessor,Data **sucessor){
+	if(!(*antecessor) && !(*sucessor)){
+		insere(unidade,(Data){((*atual)->fim - tam) + 1,(*atual)->fim,!((*atual)->status)});
+		(*atual)->fim -= tam;
+	}else if(!(*antecessor)){
 		(*atual)->fim -= tam;
 		(*sucessor)->ini -= tam;
 	}else if(!(*sucessor)){
@@ -160,6 +184,10 @@ void modificaNo(Unidade **unidade,int tamanho,int status){
 	Data *infoAux,*infoAntecessor,*infoSucessor;
 
 	aux = buscaBlocoTamanho(*unidade,tamanho,status,&noAtual);
+
+	printf("--------------------------------------------\n");
+	printf("Bloco Escolhido:\n|%d||%d| = %s\n",aux.ini,aux.fim,statusInfo(aux.status));
+	printf("--------------------------------------------\n");
 	if(noAtual){
 		antecessor = buscaFim(*unidade, antecessorInfo(aux));
 		sucessor = buscaInicio(*unidade, sucessorInfo(aux));
@@ -171,7 +199,7 @@ void modificaNo(Unidade **unidade,int tamanho,int status){
 		if(tamanho == quantidadeEspaco(aux)){
 			atualizarNoTamanhoMax(unidade,&infoAux,&infoAntecessor,&infoSucessor);
 		}else if(tamanho < quantidadeEspaco(aux)){
-			atualizarNoTamanhoMin(tamanho,&infoAux,&infoAntecessor,&infoSucessor);
+			atualizarNoTamanhoMin(tamanho,unidade,&infoAux,&infoAntecessor,&infoSucessor);
 		}
 
 		exibirEmOrdem(*unidade);

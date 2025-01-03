@@ -33,7 +33,7 @@ void testeLista(){
 void teste3(){
 	PalavraPortugues *raiz;
 	raiz = NULL;
-	recuperaDados(&raiz);
+	recuperaDados("./src/database/teste.txt",(&raiz));
 
 	exibirEmOrdem(raiz);
 
@@ -70,7 +70,7 @@ int menuOpc(){
 void menu(){
 	PalavraPortugues *raiz;
 	raiz = NULL;
-	recuperaDados(&raiz);
+	recuperaDados("./src/database/teste.txt",&raiz);
 
 	exibirEmOrdem(raiz);
 
@@ -131,11 +131,12 @@ void menu(){
 int main() {
     // teste();
     
-    menu();
+    // menu();
 	
 	// teste3();
 
 	// testeLista();
+	calcularTempoBusca();
 
 	return 0;
 }

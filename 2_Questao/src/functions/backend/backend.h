@@ -2,4 +2,4 @@
 
 #include "../../utils/utils.h"
 
-void recuperaDados(PalavraPortugues **raiz);
+void recuperaDados(char *caminho,PalavraPortugues **raiz);

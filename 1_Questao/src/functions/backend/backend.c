@@ -42,11 +42,10 @@ char* alocarString(int tamanho){
 	return (char*)calloc((unsigned int)tamanho,sizeof(char));
 }
 
-void recuperaDados(PalavraPortugues **raiz){
+void recuperaDados(char *caminho,PalavraPortugues **raiz){
 	FILE *arq;
-	arq = fopen("./src/database/teste.txt","r");
+	arq = fopen(caminho,"r");
 	
-
 	if(!arq){
 		printf("Arquivo nao encontrado!");
 	}else{

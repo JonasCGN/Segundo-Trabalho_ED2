@@ -67,7 +67,7 @@ Unidade* quebraNo(Unidade **no,Data valor,Data *promove,Unidade **filho){
 	return maior;
 }
 
-Unidade* inserirPalavraPortugues(Unidade **no, Data info, Data *promove, Unidade **pai){
+Unidade* inserirUnidade(Unidade **no, Data info, Data *promove, Unidade **pai){
 	Unidade *maiorNo;
 	Data promove1;
 	maiorNo = NULL;
@@ -87,12 +87,12 @@ Unidade* inserirPalavraPortugues(Unidade **no, Data info, Data *promove, Unidade
 			}
 		}else{
 			if(info.ini < (*no)->info1.ini){
-				maiorNo = inserirPalavraPortugues(&((*no)->esq), info, promove, no);
+				maiorNo = inserirUnidade(&((*no)->esq), info, promove, no);
 			}else{
 				if(((*no)->n_infos == 1) || (info.ini < (*no)->info2.ini)){
-					maiorNo = inserirPalavraPortugues(&((*no)->cen), info, promove,no);
+					maiorNo = inserirUnidade(&((*no)->cen), info, promove,no);
 				}else{
-					maiorNo = inserirPalavraPortugues(&((*no)->dir), info, promove,no);
+					maiorNo = inserirUnidade(&((*no)->dir), info, promove,no);
 				}
 			}
 
@@ -116,7 +116,7 @@ Unidade* inserirPalavraPortugues(Unidade **no, Data info, Data *promove, Unidade
 }
 
 void exibeInfo(Data info){
-	printf("%d | %d - %d\n",info.ini,info.fim,info.status);
+	printf("|%d||%d| = %s\n",info.ini,info.fim,statusInfo(info.status));
 }
 
 void exibirPreordem(Unidade *arv23){
