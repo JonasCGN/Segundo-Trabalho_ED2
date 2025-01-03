@@ -12,13 +12,13 @@ void teste(){
 	Unidade *pI;
 	pI = NULL;
 	
-	int qtd_info = 100;
+	int qtd_info = 5;
 
 	for(int i=0;i<qtd_info;i++){
 		insere(&pI,(Data){i * 10,((i+1)*10)-1,rand() % 2});
 	}
 
-	arvore23_remover(&pI,500);
+	arvore23_remover_ini(&pI,500);
 
 	exibirEmOrdem(pI);
 
@@ -38,7 +38,7 @@ void menu(){
 	unidadeAlocao = NULL;
 
 	// iniciarPrograma();	
-	int qtd_info = 100;
+	int qtd_info = 9;
 
 	int ini = 0,fim = 0,status = 0;
 
@@ -59,11 +59,11 @@ void menu(){
 		
 		switch (opc){
 			case 1:
-				// noLivre(&unidadeAlocao);
+				noOcupar(&unidadeAlocao);
 			break;
 			
 			case 2:
-				noOcupar(&unidadeAlocao);
+				noLivre(&unidadeAlocao);
 			break;
 
 			case 3:
@@ -87,13 +87,15 @@ void teste1(){
 	Unidade *unidadeAlocao;
 	unidadeAlocao = NULL;
 
-	// iniciarPrograma();	
-	int qtd_info = 100;
+	int qtd_info = 9;
 
 	int ini = 0,fim = 0,status = 0;
 
 	for(int i=0;i<qtd_info;i++){
 		fim = ini + rand() % 100;
+		// if(i == qtd_info - 1){
+		// 	fim += 100;
+		// }
 
 		insere(&unidadeAlocao,(Data){ini,fim,status});
 		
@@ -101,8 +103,15 @@ void teste1(){
 		ini = fim + 1;	
 	}
 
-	noOcupar(&unidadeAlocao);
-	// noLivre(&unidadeAlocao);
+	// modificaNo(&unidadeAlocao,87,LIVRE);
+	// modificaNo(&unidadeAlocao,87,LIVRE);
+
+	// modificaNo(&unidadeAlocao,87,LIVRE);
+	exibirEmOrdem(unidadeAlocao);
+	modificaNo(&unidadeAlocao,50,LIVRE);
+	modificaNo(&unidadeAlocao,50,LIVRE);
+	
+	// modificaNo(&unidadeAlocao,87,OCUPADO);
 
 	liberaArvore23(unidadeAlocao);
 }
@@ -110,8 +119,8 @@ void teste1(){
 int main(){
 	// teste();
 
-	// menu();
+	menu();
 
-	teste1();
+	// teste1();
 	return 0;
 }

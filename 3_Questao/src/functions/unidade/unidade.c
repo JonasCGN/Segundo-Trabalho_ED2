@@ -1,10 +1,58 @@
 #include "unidade.h"
 
 static int quantidadeEspaco(Data info){
-	return info.fim - info.ini;
+	return (info.fim - info.ini) + 1;
 }
 
-Data buscaBloco(Unidade *unidade,int quant,int status, Unidade **noEscolhido){
+static void exibeInfo(Data *unidade){
+	if(unidade){
+		printf("%d | %d\n",unidade->ini,unidade->fim);
+	}
+}
+
+static Data *infoRequerida(Data *info1){
+	return info1;
+}
+
+static Data *infoCorretaIni(Unidade *unidade,int info){
+	Data *aux;
+	aux = NULL;
+	
+	if(unidade){
+		if(info == unidade->info1.ini){
+			aux = infoRequerida(&(unidade->info1));
+		}else{
+			aux = infoRequerida(&(unidade->info2));
+		}
+	}
+
+	return aux;
+}
+
+static Data *infoCorretaFim(Unidade *unidade,int info){
+	Data *aux;
+	aux = NULL;
+	
+	if(unidade){
+		if(info == unidade->info1.fim){
+			aux = infoRequerida(&(unidade->info1));
+		}else{
+			aux = infoRequerida(&(unidade->info2));
+		}
+	}
+
+	return aux;
+}
+
+static int antecessorInfo(Data info){
+	return info.ini - 1;
+}
+
+static int sucessorInfo(Data info){
+	return info.fim + 1;
+}
+
+Data buscaBlocoTamanho(Unidade *unidade,int quant,int status, Unidade **noEscolhido){
 	Data aux;
 
 	if(unidade){
@@ -15,142 +63,156 @@ Data buscaBloco(Unidade *unidade,int quant,int status, Unidade **noEscolhido){
 			aux = unidade->info2;
 			*noEscolhido = unidade;
 		}else{
-			aux = buscaBloco(unidade->esq,quant,status,noEscolhido);
-			aux = buscaBloco(unidade->cen,quant,status,noEscolhido);
-			aux = buscaBloco(unidade->dir,quant,status,noEscolhido);
+			aux = buscaBlocoTamanho(unidade->esq,quant,status,noEscolhido);
+			if(!(*noEscolhido)){
+				aux = buscaBlocoTamanho(unidade->cen,quant,status,noEscolhido);
+			}
+			if(!(*noEscolhido)){
+				aux = buscaBlocoTamanho(unidade->dir,quant,status,noEscolhido);
+			}
 		}
 	}
 
 	return aux;
 }
 
-Unidade *atualizaInfoPos(Unidade **noEscolhido,Data info,int quant){
-	Unidade *noAtualizado;
-	noAtualizado = NULL;
+Unidade *buscaFim(Unidade *unidade,int info){
+	Unidade *aux;
+	aux = NULL;
 
-	if(*noEscolhido){
-		if(info.fim + quant  == (*noEscolhido)->info1.ini){
-			if(info.fim == info.ini){
-				(*noEscolhido)->info1.ini = info.fim;
+	if(unidade){
+		if(info == unidade->info1.fim){
+			aux = unidade;
+		}else if(unidade->n_infos == 2 && info == unidade->info2.fim){
+			aux = unidade;
+		}else{
+			if(info < unidade->info1.fim){
+				aux = buscaFim(unidade->esq,info);
+			}else if(unidade->n_infos == 1 || info < unidade->info2.fim){
+				aux = buscaFim(unidade->cen,info);
 			}else{
-				(*noEscolhido)->info1.ini = info.fim + 1;
+				aux = buscaFim(unidade->dir,info);
 			}
-			noAtualizado = (*noEscolhido);
-		}else if((*noEscolhido)->n_infos == 2 && info.fim + quant == (*noEscolhido)->info2.ini){
-			if(info.fim == info.ini){
-				(*noEscolhido)->info2.ini = info.fim;
+		}
+	}
+
+	return aux;
+}
+
+Unidade *buscaInicio(Unidade *unidade,int info){
+	Unidade *aux;
+	aux = NULL;
+
+	if(unidade){
+		if(info == unidade->info1.ini){
+			aux = unidade;
+		}else if(unidade->n_infos == 2 && info == unidade->info1.ini){
+			aux = unidade;
+		}else{
+			if(info < unidade->info1.ini){
+				aux = buscaInicio(unidade->esq,info);
+			}else if(unidade->n_infos == 1 || info < unidade->info2.ini){
+				aux = buscaInicio(unidade->cen,info);
 			}else{
-				(*noEscolhido)->info2.ini = info.fim + 1;
+				aux = buscaInicio(unidade->dir,info);
 			}
-			noAtualizado = (*noEscolhido);
-		}else{
-			noAtualizado = atualizaInfoPos(&((*noEscolhido)->esq),info,quant);
-			noAtualizado = atualizaInfoPos(&((*noEscolhido)->cen),info,quant);
-			noAtualizado = atualizaInfoPos(&((*noEscolhido)->dir),info,quant);
 		}
 	}
 
-	return noAtualizado;
+	return aux;
 }
 
-Unidade *atualizarInfo(Unidade **noEscolhido,Data info,int quant){
-	Unidade *noAtualizado;
-	noAtualizado = NULL;
-
-	if(*noEscolhido){
-		if(info.ini == (*noEscolhido)->info1.ini){
-			(*noEscolhido)->info1.fim -= quant;
-			noAtualizado = atualizaInfoPos(noEscolhido,(*noEscolhido)->info1,quant+1);
-		}else if((*noEscolhido)->n_infos == 2 && info.ini == (*noEscolhido)->info2.ini){
-			(*noEscolhido)->info2.fim -= quant;
-			noAtualizado = atualizaInfoPos(noEscolhido,(*noEscolhido)->info2,quant+1);
-		}else{
-			noAtualizado = atualizarInfo(&((*noEscolhido)->esq),info,quant);
-			noAtualizado = atualizarInfo(&((*noEscolhido)->cen),info,quant);
-			noAtualizado = atualizarInfo(&((*noEscolhido)->dir),info,quant);
-		}
-	}
-
-	return noAtualizado;
-}
-
-void concatenar(Unidade **unidade,Data info,Data *infoAtualizada){
-	if(*unidade){
-		if(info.ini - 1 == (*unidade)->info1.fim){
-			(*unidade)->info1.fim = infoAtualizada->fim;
-			arvore23_remover(unidade,infoAtualizada->ini);
-		}else if((*unidade)->n_infos == 2 && info.ini == (*unidade)->info2.fim){
-			(*unidade)->info2.fim = infoAtualizada->fim;
-			arvore23_remover(unidade,infoAtualizada->ini);
-		}else{
-			concatenar(&((*unidade)->esq),info,infoAtualizada);
-			concatenar(&((*unidade)->cen),info,infoAtualizada);
-			concatenar(&((*unidade)->dir),info,infoAtualizada);
+void exibeInfoUnidade(Unidade *unidade){
+	if(unidade){
+		printf("%d | %d\n",unidade->info1.ini,unidade->info1.fim);
+		if(unidade->n_infos == 2){
+			printf("%d | %d\n",unidade->info2.ini,unidade->info2.fim);
 		}
 	}
 }
 
-void atualizarNo(Unidade **unidade,int tamanho,Unidade **noEscolhido,Data info){
-	Unidade *atualizado;
-	atualizado = NULL;
+void atualizarNoTamanhoMax(Unidade **unidade,Data **atual,Data **antecessor,Data **sucessor){
+	if(!(*antecessor)){
+		(*atual)->fim = (**sucessor).fim;
+		(*atual)->status = !((*atual)->status);
+		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**sucessor).ini));
+	}else if(!(*sucessor)){
+		(*antecessor)->fim = (**atual).fim;
+		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**atual).ini));
+	}else{
+		(*antecessor)->fim = (**sucessor).fim;
+		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**sucessor).ini));
+		printf("\n\n %d \n\n",arvore23_remover_ini(unidade,(**atual).ini));
+	}
+}
 
-	if(tamanho < quantidadeEspaco(info)){
-		atualizado = atualizarInfo(noEscolhido,info,tamanho);
-	}else if(tamanho == quantidadeEspaco(info)){
-		atualizado = atualizarInfo(noEscolhido,info,tamanho);
-		arvore23_remover(unidade,info.ini);
+void atualizarNoTamanhoMin(int tam,Data **atual,Data **antecessor,Data **sucessor){
+	if(!(*antecessor)){
+		(*atual)->fim -= tam;
+		(*sucessor)->ini -= tam;
+	}else if(!(*sucessor)){
+		(*atual)->ini += tam;
+		(*antecessor)->fim += tam;
+	}else{
+		(*atual)->fim -= tam;
+		(*sucessor)->ini -= tam;
+	}
+}
 
-		if(atualizado->info1.ini == info.ini){
-			concatenar(unidade,info,&(atualizado->info1));
-		}else if(atualizado->n_infos == 2 && atualizado->info2.ini == info.ini){
-			concatenar(unidade,info,&(atualizado->info2));
+void modificaNo(Unidade **unidade,int tamanho,int status){
+	Unidade *antecessor,*sucessor,*noAtual;
+	noAtual = NULL;
+	Data aux;
+	Data *infoAux,*infoAntecessor,*infoSucessor;
+
+	aux = buscaBlocoTamanho(*unidade,tamanho,status,&noAtual);
+	if(noAtual){
+		antecessor = buscaFim(*unidade, antecessorInfo(aux));
+		sucessor = buscaInicio(*unidade, sucessorInfo(aux));
+
+		infoAntecessor = infoCorretaFim(antecessor, antecessorInfo(aux));
+		infoSucessor = infoCorretaIni(sucessor, sucessorInfo(aux));
+
+		printf("ATUAL\n");
+		infoAux = infoCorretaIni(noAtual,aux.ini);
+		exibeInfo(infoAux);
+
+		printf("ANTECESSOR\n");
+		exibeInfo(infoAntecessor);
+
+		printf("SUCESSOR\n");
+		exibeInfo(infoSucessor);
+
+		if(tamanho == quantidadeEspaco(aux)){
+			atualizarNoTamanhoMax(unidade,&infoAux,&infoAntecessor,&infoSucessor);
+		}else if(tamanho < quantidadeEspaco(aux)){
+			atualizarNoTamanhoMin(tamanho,&infoAux,&infoAntecessor,&infoSucessor);
 		}
+
+		exibirEmOrdem(*unidade);
+	}else{
+		printf("Nao a espaço disponivel!\n");
 	}
 }
 
 void noOcupar(Unidade **unidade){
-	Data aux;
-	Unidade *noEscolhido;
-	noEscolhido = NULL;
-
-	int tamanho = 94;
-	int status = 0;
-
-	// printf("Voce quer usar qual bloco digite o inicio:");
-	// scanf("%d",&tamanho);
+	int tamanho;
+	
 	exibirEmOrdem(*unidade);
 
-	aux = buscaBloco(*unidade,tamanho,status,&noEscolhido);
+	printf("Voce quer usar qual bloco digite o inicio:");
+	scanf("%d",&tamanho);
 
-	if(noEscolhido){
-		printf("Info Escolhido:\n");
-		printf("%d - %d\n",aux.ini,aux.fim);
-		atualizarNo(unidade,tamanho,&noEscolhido,aux);
-		exibirEmOrdem(*unidade);
-	}else{
-		printf("Impossivel alocar espaço\n");
-	}
+	modificaNo(unidade,tamanho,LIVRE);
 }
 
 void noLivre(Unidade **unidade){
-	Data aux;
-	Unidade *noEscolhido;
-	noEscolhido = NULL;
+	int tamanho;
 
-	int tamanho = 10;
-	int status = 1;
-
-	// printf("Voce quer usar qual bloco digite o inicio:");
-	// scanf("%d",&tamanho);
 	exibirEmOrdem(*unidade);
+	
+	printf("Voce quer usar qual bloco digite o inicio:");
+	scanf("%d",&tamanho);
 
-	aux = buscaBloco(*unidade,tamanho,status,&noEscolhido);
-
-	if(noEscolhido){
-		printf("Info Escolhido:\n");
-		printf("%d - %d\n",aux.ini,aux.fim);
-		atualizarNo(unidade,tamanho,&noEscolhido,aux);
-		exibirEmOrdem(*unidade);
-
-	}
+	modificaNo(unidade,tamanho,OCUPADO);
 }

@@ -10,3 +10,5 @@
 #include "../functions/backend/backend.h"
 #include "../functions/lista/lista.h"
 #include "../functions/remocao/remocao.h"
+
+#include "../functions/tempo/tempo.h"

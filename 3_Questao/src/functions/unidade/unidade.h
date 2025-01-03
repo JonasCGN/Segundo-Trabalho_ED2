@@ -4,3 +4,4 @@
 
 void noOcupar(Unidade **unidade);
 void noLivre(Unidade **unidade);
+void modificaNo(Unidade **unidade,int tamanho,int status);

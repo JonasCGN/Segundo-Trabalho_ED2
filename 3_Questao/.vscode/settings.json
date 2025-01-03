@@ -12,6 +12,10 @@
         "utils.h": "c",
         "arv_2_3.h": "c",
         "arv_bb.h": "c",
-        "struct.h": "c"
+        "struct.h": "c",
+        "string.h": "c",
+        "remocao_fim.h": "c",
+        "remocao_ini.h": "c",
+        "unidade.h": "c"
     }
 }
