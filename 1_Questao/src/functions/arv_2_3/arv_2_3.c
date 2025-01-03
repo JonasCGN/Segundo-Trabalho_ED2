@@ -77,7 +77,7 @@ static PalavraPortugues* noPalavra(Data info,PalavraPortugues *no,PalavraPortugu
 
 	if(strcmp(info.palavraPortugues,no->info1.palavraPortugues) == 0){
 		noInserido = no;
-	}else if(strcmp(info.palavraPortugues,(maiorNo)->info1.palavraPortugues) == 0){
+	}else if((maiorNo) && strcmp(info.palavraPortugues,(maiorNo)->info1.palavraPortugues) == 0){
 		noInserido = maiorNo;
 	}else{
 		noInserido = NULL;
@@ -100,26 +100,26 @@ PalavraPortugues* inserirPalavraPortugues(PalavraPortugues **no, Data info, Data
 		*noInserido = (*no);
 	}else{
 		if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
-			*noInserido = (*no);
+			if(!(*noInserido))
+				*noInserido = (*no);
 		}else if(ehFolha(*no)){
 			if((*no)->n_infos == 1){
 				adicionaChave(*no, info, NULL);
-				// *noInserido = *no;
-				if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
-					*noInserido = (*no);
-				}
+
+				if(!(*noInserido))
+					if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
+						*noInserido = (*no);
+					}
 			}else{
 				maiorNo = quebraNo(no, info, promove,NULL);
-				*noInserido = noPalavra(info,*no,maiorNo);
 
 				if(!(*pai)){
 					*no = criaNo(*promove, *no, maiorNo);
 					maiorNo = NULL;
 				}
-				
-				if(strcmp(info.palavraPortugues,(*no)->info1.palavraPortugues) == 0){
-					*noInserido = *no;
-				}
+
+				if(!(*noInserido))
+					*noInserido = noPalavra(info,*no,maiorNo);
 			}
 		}else{
 			if(comparaPalavraUnidade(info,(*no)->info1)){
@@ -130,7 +130,8 @@ PalavraPortugues* inserirPalavraPortugues(PalavraPortugues **no, Data info, Data
 				}else if((*no)->n_infos == 2 && comparaPalavraUnidade((*no)->info2,info)){
 					maiorNo = inserirPalavraPortugues(&((*no)->dir), info, promove,no,noInserido);
 				}else{
-					*noInserido = (*no);
+					if(!(*noInserido))
+						*noInserido = (*no);
 				}
 			}
 
@@ -138,25 +139,28 @@ PalavraPortugues* inserirPalavraPortugues(PalavraPortugues **no, Data info, Data
 				if((*no)->n_infos == 1){
 					adicionaChave(*no, *promove, maiorNo);
 
-					if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
-						*noInserido = (*no);
-					}
+					if(!(*noInserido))
+						if(comparaPalavraNo(info,(*no)->info1,(*no)->info2,(*no)->n_infos)){
+							*noInserido = (*no);
+						}
 					
 					maiorNo = NULL;
 				}else{
 					maiorNo = quebraNo(no, *promove, &promove1, &maiorNo);
 					*promove = promove1;
 
-					*noInserido = noPalavra(info,*no,maiorNo);
+					if(!(*noInserido))
+						*noInserido = noPalavra(info,*no,maiorNo);
 
 					if(!(*pai)){
 						*no = criaNo(promove1, *no,maiorNo);
 						maiorNo = NULL;
 					}
-
-					if(strcmp(info.palavraPortugues,(*no)->info1.palavraPortugues) == 0){
-						*noInserido = *no;
-					}
+					
+					if(!(*noInserido))
+						if(strcmp(info.palavraPortugues,(*no)->info1.palavraPortugues) == 0){
+							*noInserido = *no;
+						}
 				}
 			}
 		}

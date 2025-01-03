@@ -14,7 +14,8 @@ static void insere(PalavraPortugues **pi,Data info,char *p_en,int unidade){
 	PalavraPortugues *raiz;
 	raiz = NULL;
 	PalavraPortugues *inserido;
-
+	inserido = NULL;
+	
 	inserirPalavraPortugues(pi,info,&promove,&raiz,&inserido);
 	
 	InfoArvBB infoBB;

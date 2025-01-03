@@ -56,24 +56,34 @@ double tempoPercorre(PalavraPortugues *dicionario,char *palavra){
 void calcularTempoBusca(){
 	PalavraPortugues *dicionario;
 	dicionario = NULL;
-	recuperaDados("./src/database/teste.txt",&dicionario);
+	
+	double media = 0,tempo = 0;
+	int n = 30;
+	recuperaDados("./src/database/teste2.txt",&dicionario);
 
 	char *listaPalavra[] = {
-		"inseto","onibus","barramento","problema",
-		"rede de computadores","ventilador","bicicleta","sistema",
-		"rede de relacionamento","barramento","barramento","barramento",
-		"barramento","barramento","barramento","barramento",
+		"onibus", "barramento", "inseto", "problema", 
+		"bicicleta", "bolsa", "mochila", "bola", 
+		"esfera", "livro", "barco", "caixa", 
+		"sino", "passaro", "ponte", "garrafa", 
+		"escova", "pao", "tijolo", "galho", 
+		"banco", "gato", "xicara", "copo", 
+		"carro", "automovel", "cadeira", "vaca", 
+		"relogio", "nuvem"
 	};
 
-	for(int i=0;i<9;i++){
+	for(int i=0;i<n;i++){
+		tempo = tempoPercorre(dicionario,listaPalavra[i]);
+		
 		printf("----------------------------------------\n");
 		printf("Tempo para buscar %s:",listaPalavra[i]);
-		printf("%lf\n", tempoPercorre(dicionario,listaPalavra[i]));
+		printf("%lf\n", tempo);
+		media += tempo;
 		printf("Caminho percorrido para buscar %s:",listaPalavra[i]);
 		caminhoPercorrido(dicionario,listaPalavra[i]);
 		printf("----------------------------------------\n");
 	}
-
+	printf("A media foi: %lf\n", media / n);
 	// exibirEmOrdem(dicionario);
 
 	liberaArvore23(dicionario);
