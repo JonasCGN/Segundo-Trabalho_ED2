@@ -56,7 +56,7 @@ static int sucessorInfo(Data info){
 
 char *statusInfo(int status){
 	char *palavra;
-	if(status){
+	if(!status){
 		palavra = "Livre";
 	}else{
 		palavra = "Ocupado";
@@ -163,7 +163,7 @@ void atualizarNoTamanhoMax(Unidade **unidade,Data **atual,Data **antecessor,Data
 
 void atualizarNoTamanhoMin(int tam,Unidade **unidade,Data **atual,Data **antecessor,Data **sucessor){
 	if(!(*antecessor) && !(*sucessor)){
-		insere(unidade,(Data){((*atual)->fim - tam) + 1,(*atual)->fim,!((*atual)->status)});
+		insere(unidade,(Data){((*atual)->fim - tam) + 1,(*atual)->fim,(*atual)->blocoIni,(*atual)->blocoFim,!((*atual)->status)});
 		(*atual)->fim -= tam;
 	}else if(!(*antecessor)){
 		(*atual)->fim -= tam;
@@ -228,4 +228,50 @@ void noLivre(Unidade **unidade){
 	scanf("%d",&tamanho);
 
 	modificaNo(unidade,tamanho,OCUPADO);
+}
+
+void leia_int(char *texto, int *variavel){
+    printf("%s", texto);
+    scanf("%d", variavel);
+
+    setbuf(stdin,NULL);
+}
+
+void leia_numero_no(char *texto, int *variavel, int minimo, int maximo){
+    do{
+        leia_int(texto, variavel);
+        if(*variavel < minimo || *variavel >= maximo)
+            printf("\nDigite um número entre %d e %d\n", minimo, maximo-1);
+    } while(*variavel < minimo || *variavel >= maximo);
+}
+
+int iniciarPrograma(Unidade **arvore, int maximo){
+    int status;
+
+    do{
+        printf("\nO primeiro nó está livre ou ocupado?");
+        printf("\n[%d] - %s", LIVRE, "Livre");
+        printf("\n[%d] - %s", OCUPADO, "Ocupado");
+        leia_int("\nStatus: ", &status);
+
+        if(status != LIVRE && status != OCUPADO)
+            printf("\nDigite uma opção válida!\n");
+    } while(status != LIVRE && status != OCUPADO);
+
+    Data no;
+    leia_numero_no("\nEndereço inicial: ", &no.ini, 0, maximo);
+    int minimo = no.ini;
+    do{
+        no.status = status;
+        no.blocoIni = minimo;
+        no.blocoFim = maximo - 1;
+        leia_numero_no("\nEndereço final: ", &no.fim, no.ini, maximo);
+
+		insere(arvore,no);
+
+        no.ini = no.fim + 1;
+        status = !status;
+    }while(no.fim < (maximo - 1));
+
+    return minimo;
 }

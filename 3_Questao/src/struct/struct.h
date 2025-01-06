@@ -2,6 +2,7 @@
 
 typedef struct data{
     int ini,fim;
+    int blocoIni,blocoFim;
     int status;
 }Data;
 

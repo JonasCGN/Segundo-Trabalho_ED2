@@ -8,23 +8,6 @@ void insere(Unidade **pi,Data info){
 	inserirUnidade(pi,info,&promove,&raiz);
 }
 
-void teste(){
-	Unidade *pI;
-	pI = NULL;
-	
-	int qtd_info = 5;
-
-	for(int i=0;i<qtd_info;i++){
-		insere(&pI,(Data){i * 10,((i+1)*10)-1,rand() % 2});
-	}
-
-	arvore23_remover_ini(&pI,500);
-
-	exibirEmOrdem(pI);
-
-	liberaArvore23(pI);
-}
-
 void menuOpc(){
     printf("1 - Ocupar Nós Livres\n");
     printf("2 - Desocupar Nós\n");
@@ -33,23 +16,17 @@ void menuOpc(){
 }
 
 void menu(){
-	int opc;
+	int opc,maximo;
 	Unidade *unidadeAlocao;
 	unidadeAlocao = NULL;
 
-	// iniciarPrograma();	
-	int qtd_info = 9;
+	do{
+        leia_int("Quantidade máxima de Blocos de memória: ", &maximo);
+        if(maximo <= 0)
+            printf("\nDigite uma quantidade positiva!\n\n");
+    } while(maximo <= 0);
 
-	int ini = 0,fim = 0,status = 0;
-
-	for(int i=0;i<qtd_info;i++){
-		fim = ini + rand() % 100;
-
-		insere(&unidadeAlocao,(Data){ini,fim,status});
-		
-		status = !status;
-		ini = fim + 1;	
-	}
+	iniciarPrograma(&unidadeAlocao,maximo);	
 
 	exibirEmOrdem(unidadeAlocao);
 
@@ -83,55 +60,9 @@ void menu(){
 	liberaArvore23(unidadeAlocao);
 }
 
-void teste1(){
-	Unidade *unidadeAlocao;
-	unidadeAlocao = NULL;
-
-
-	int ini = 0,fim = 0,status = 0;
-	int list[] = {
-		8,20,30
-	};
-	
-	int qtd_info = sizeof(list) / sizeof(int);
-
-	for(int i=0;i<qtd_info;i++){
-		fim = list[i];
-		// if(i == qtd_info - 1){
-		// 	fim += 100;
-		// }
-
-		insere(&unidadeAlocao,(Data){ini,fim,status});
-		
-		status = !status;
-		ini = fim + 1;	
-	}
-
-	// modificaNo(&unidadeAlocao,87,LIVRE);
-	// modificaNo(&unidadeAlocao,87,LIVRE);
-
-	// modificaNo(&unidadeAlocao,87,LIVRE);
-	exibirEmOrdem(unidadeAlocao);
-	modificaNo(&unidadeAlocao,10,LIVRE);
-	// modificaNo(&unidadeAlocao,84,LIVRE);
-
-	// modificaNo(&unidadeAlocao,50,LIVRE);
-	// modificaNo(&unidadeAlocao,50,LIVRE);
-	// modificaNo(&unidadeAlocao,50,LIVRE);
-	// modificaNo(&unidadeAlocao,50,LIVRE);
-	// modificaNo(&unidadeAlocao,50,LIVRE);
-	// modificaNo(&unidadeAlocao,50,LIVRE);
-	
-	// modificaNo(&unidadeAlocao,87,OCUPADO);
-
-	liberaArvore23(unidadeAlocao);
-}
-
 int main(){
-	// teste();
 
 	menu();
-
-	// teste1();
+	
 	return 0;
 }

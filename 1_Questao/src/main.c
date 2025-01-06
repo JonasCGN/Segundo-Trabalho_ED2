@@ -100,9 +100,6 @@ void menu(){
 				printf("\n");
 			break;
 			
-			// (iii)informar uma palavra em inglês e e a unidade a qual a mesma pertence remove-la das árvores binárias
-			// das quais ela pertence. Caso ela seja a única palavra em uma das árvores binárias, remover também da
-			// árvore 2-3;
 			case 3:
 				menuRemoverPalavraIngles(raiz);
 			break;
@@ -131,12 +128,12 @@ void menu(){
 int main() {
     // teste();
     
-    // menu();
+    menu();
 	
 	// teste3();
 
 	// testeLista();
-	calcularTempoBusca();
+	// calcularTempoBusca();
 
 	return 0;
 }

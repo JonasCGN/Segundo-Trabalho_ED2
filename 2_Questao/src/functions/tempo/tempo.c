@@ -1,27 +1,35 @@
 #include "tempo.h"
 
-void caminhoPercorrido(PalavraPortugues *dicionario,char *palavra){
+static Data criaInfoVP(char *palavra){
+	Data info;
+
+	sprintf(info.palavraPortugues,"%s",palavra);
+	info.traducaoIngles = NULL;
+
+	return info;
+}
+
+int caminhoPercorrido(PalavraPortugues *dicionario,char *palavra){
+	int caminho = 0;
+
 	if(dicionario){
 		if(strcmp(palavra,dicionario->info.palavraPortugues) == 0){
 			printf("%s\n", dicionario->info.palavraPortugues);
+			caminho++;
 		}else{
 			printf("%s -> ", dicionario->info.palavraPortugues);
-
+			caminho++;
 			if(strcmp(palavra,dicionario->info.palavraPortugues) < 0){
-				caminhoPercorrido(dicionario->esq,palavra);
+				caminho += caminhoPercorrido(dicionario->esq,palavra);
 			}else{
-				caminhoPercorrido(dicionario->dir,palavra);
+				caminho += caminhoPercorrido(dicionario->dir,palavra);
 			}
 		}
 	}
+	return caminho;
 }
 
-double tempoPercorre(PalavraPortugues *dicionario,char *palavra){
-    clock_t inicio, fim;
-    double tempo_gasto;
-
-	inicio = clock();
-
+void tempoPercorre(PalavraPortugues *dicionario,char *palavra){
 	if(dicionario){
 		if(strcmp(palavra,dicionario->info.palavraPortugues) == 0){
 			
@@ -33,45 +41,67 @@ double tempoPercorre(PalavraPortugues *dicionario,char *palavra){
 			}
 		}
 	}
-	fim = clock();
-
-	tempo_gasto = (double)(fim - inicio) / CLOCKS_PER_SEC;
-
-
-	return tempo_gasto;
 } 
 
 void calcularTempoBusca(){
-	PalavraPortugues *dicionario;
+		PalavraPortugues *dicionario;
 	dicionario = NULL;
-	recuperaDados("./src/database/teste2.txt",&dicionario);
-	double tempo = 0,media= 0;
-	int n = 30;
-	char *listaPalavra[] = {
-		"onibus", "barramento", "inseto", "problema", 
-		"bicicleta", "bolsa", "mochila", "bola", 
-		"esfera", "livro", "barco", "caixa", 
-		"sino", "passaro", "ponte", "garrafa", 
-		"escova", "pao", "tijolo", "galho", 
-		"banco", "gato", "xicara", "copo", 
-		"carro", "automovel", "cadeira", "vaca", 
-		"relogio", "nuvem"
-	};
+	clock_t inicio, fim;
+	double media = 0,tempo = 0;
+	int n = 30,quant=100000,tempo_total=0;
+	// recuperaDados("./src/database/teste2.txt",&dicionario);
+	// char *listaPalavra[] = {
+	// 	"onibus", "barramento", "inseto", "problema", 
+	// 	"bicicleta", "bolsa", "mochila", "bola", 
+	// 	"esfera", "livro", "barco", "caixa", 
+	// 	"sino", "passaro", "ponte", "garrafa", 
+	// 	"escova", "pao", "tijolo", "galho", 
+	// 	"banco", "gato", "xicara", "copo", 
+	// 	"carro", "automovel", "cadeira", "vaca", 
+	// 	"relogio", "nuvem"
+	// };
+
+	char palavra[10];
+
+	for(int i=0;i < quant;i++){
+		sprintf(palavra,"%d",i);
+		inserePalavraPortugues(&dicionario,criaNo(criaInfoVP(palavra)));
+	}
 
 	for(int i=0;i<n;i++){
-		tempo = tempoPercorre(dicionario,listaPalavra[i]);
-		printf("----------------------------------------\n");
-		printf("Tempo para buscar %s:",listaPalavra[i]);
+		sprintf(palavra,"%d",(quant/2) - 1 - i);
+		inicio = clock();
+		tempoPercorre(dicionario,palavra);
+		fim = clock();
+		tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+		
+		// printf("----------------------------------------\n");
+		// printf("Tempo para buscar %s:",palavra);
 		printf("%lf\n", tempo);
-		printf("Caminho percorrido para buscar %s:",listaPalavra[i]);
-		caminhoPercorrido(dicionario,listaPalavra[i]);
-		printf("----------------------------------------\n");
-
 		media += tempo;
+		// printf("Caminho percorrido para buscar %s:",palavra);
+		// printf("Tamanho do camina: %d\n",tempo_total += caminhoPercorrido(dicionario,palavra));
+		// printf("----------------------------------------\n");
 	}
-	printf("A media foi: %lf\n", media/n);
 
-	// exibirEmOrdem(dicionario);
+	// for(int i=0;i<n;i++){
+	// 	inicio = clock();
+	// 	tempoPercorre(dicionario,listaPalavra[i]);
+	// 	fim = clock();
+	// 	tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+		
+	// 	printf("----------------------------------------\n");
+	// 	printf("Tempo para buscar %s:",listaPalavra[i]);
+	// 	printf("%lf\n", tempo);
+	// 	media += tempo;
+	// 	printf("Caminho percorrido para buscar %s:",listaPalavra[i]);
+	// 	printf("Tamanho do camina: %d\n",caminhoPercorrido(dicionario,listaPalavra[i]));
+	// 	printf("----------------------------------------\n");
+	// }
+	
+	printf("%lf\n", media);
+	printf("O total de caminho percorrido foi: %d\n", tempo_total);
+
 
 	liberarPalavraPortugues(dicionario);
 }
